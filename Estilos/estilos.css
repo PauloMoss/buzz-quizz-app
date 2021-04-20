@@ -220,6 +220,119 @@ article.container-resultado{
     color: #818181; 
     margin: 0 auto 85px auto;
 }
+.container-comeco {
+    margin: 140px auto 24px auto;
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
+.dados-entrada-criar {
+    margin:0px auto 24px auto;
+    padding: 21px 20px 15px 16px;
+    width: 600px;
+    background: #fff;
+    box-shadow: 0px 0px 10px 0px #0000000D;
+    text-align: left;
+}
+.container-comeco h1{
+    color: #000;
+    font-size: 23px;
+    font-weight: 700;
+    line-height: 27px;
+    letter-spacing: 0em;
+    margin-bottom: 27px;
+}
+.dados-entrada-criar h2{
+    color: #000;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 23px;
+    letter-spacing: 0em;
+    margin-bottom: 12px;
+}
+.dados-entrada-criar input{
+    border: 1px solid #D1D1D1;
+    margin-bottom: 9px;
+    border-radius: 5px;
+    width: 564px;
+    height: 46px;
+    font-size: 19px;
+    font-weight: 400;
+    line-height: 22px;
+    letter-spacing: 0em;
+    text-align: left;
+    padding-left: 24px;
+    color: #000;
+}
+.dados-entrada-criar input:nth-of-type(even){
+    margin-bottom: 28px;
+}
+.dados-entrada-criar input:last-of-type{
+    margin-bottom: 13px;
+}
+.dados-entrada-criar input::placeholder{
+    font-style: italic;
+    color: #bababa;
+}
+.dados-entrada-criar input:focus{
+    border: 2px solid #000;
+}
+.container-comeco button{
+    margin-top: 61px;
+    width: 369px;
+    height: 54px;
+    border-radius: 15px;
+    font-size: 21px;
+    font-weight: 400;
+    line-height: 25px;
+    letter-spacing: 0em;
+    text-align: center;
+    color: #FFF5F4;
+    background: #EC362D;
+}
+.pergunta-minimizada {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 38px;
+    width: 564px;
+}.pergunta-minimizada h2{
+    margin:0;
+}
+.pergunta-minimizada img {
+    background-size: cover;
+    height: 26px;
+    width: 26px;
+}
+/*Não esta funcionando fundo da imagem com gradiente.*/
+.container-comeco.fim>div {
+    width: 500px;
+    height: 266px;
+    text-align: left;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.5) 64.58%, #000000 100%);
+    border-radius: 5px;
+}
+.quizz.fim>img {
+    background-size: cover;
+}
+.nomeDoQuiz.fim div {
+    font-size: 23px;
+    font-weight: 400;
+    line-height: 27px;
+    letter-spacing: 0em;
+}
+/*Não esta funcionando fundo da imagem com gradiente.*/
+.retorna-inicio.fim {
+    background: none;
+    color: #818181;
+    margin: 0;
+}
+.reinicia-quizz.fim{
+    width: 266px;
+    margin-top: 35px;
+}
 .oculto {
     display: none;
 }

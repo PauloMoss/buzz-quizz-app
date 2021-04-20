@@ -13,7 +13,7 @@
 </head>
 <body>
     <div class="topo">BuzzQuizz</div>
-    <div class="pagina-inicial">
+    <div class="pagina-inicial oculto">
         <div class="criarQuizz container">
             <div>não criou nenhum quizz</div> 
             <button class="botaoCriarQuizz">Criar Quizz</button>
@@ -68,9 +68,129 @@
         <button class="reinicia-quizz">Reiniciar Quizz</button>
         <button onclick="irParaPaginaInicial()" class="retorna-inicio">Voltar pra home</button>
     </div>
-
     <div class="pagina-criar-Quizz oculto">
-        
+        <div class="tela-3-1">
+            <div class="container-comeco">
+                <h1>Comece pelo Começo</h1> 
+                <article class="dados-entrada-criar">
+                    <input type="text" placeholder="Título do seu quizz">
+                    <input type="text" placeholder="URL da imagem do seu quizz">
+                    <input type="text" placeholder="Quantidade de perguntas do quizz">
+                    <input type="text" placeholder="Quantidade de níveis do quizz">
+                </article>
+                <button>Prosseguir pra criar perguntas</button>
+            </div>
+        </div>
+        <div class="tela-3-2">
+            <div class="container-comeco">
+                <h1>Crie suas perguntas</h1> 
+                <article class="dados-entrada-criar">
+                    <div class="pergunta-minimizada oculto"><h2>Pergunta 1</h2><img onclick="alternarPergunta(this)" src="img/create.svg" alt="expandir pergunta"></div>
+                    <div class="pergunta-expandida" onclick="alternarPergunta(this)">
+                        <h2>Pergunta 1</h2>
+                        <input type="text" placeholder="Texto da pergunta">
+                        <input type="text" placeholder="Cor de fundo da pergunta">
+                        <h2>Resposta correta</h2>
+                        <input type="text" placeholder="Resposta correta">
+                        <input type="text" placeholder="URL da imagem">
+                        <h2>Respostas incorretas</h2>
+                        <input type="text" placeholder="Resposta incorreta 1">
+                        <input type="text" placeholder="URL da imagem 1">
+                        <input type="text" placeholder="Resposta incorreta 2">
+                        <input type="text" placeholder="URL da imagem 2">
+                        <input type="text" placeholder="Resposta incorreta 3">
+                        <input type="text" placeholder="URL da imagem 3">
+                    </div>
+                </article>
+                <article class="dados-entrada-criar">
+                    <div class="pergunta-minimizada"><h2>Pergunta 2</h2><img onclick="alternarPergunta(this)" src="img/create.svg" alt="expandir pergunta"></div>
+                    <div class="pergunta-expandida oculto" onclick="alternarPergunta(this)">
+                        <h2>Pergunta 2</h2>
+                        <input type="text" placeholder="Texto da pergunta">
+                        <input type="text" placeholder="Cor de fundo da pergunta">
+                        <h2>Resposta correta</h2>
+                        <input type="text" placeholder="Resposta correta">
+                        <input type="text" placeholder="URL da imagem">
+                        <h2>Respostas incorretas</h2>
+                        <input type="text" placeholder="Resposta incorreta 1">
+                        <input type="text" placeholder="URL da imagem 1">
+                        <input type="text" placeholder="Resposta incorreta 2">
+                        <input type="text" placeholder="URL da imagem 2">
+                        <input type="text" placeholder="Resposta incorreta 3">
+                        <input type="text" placeholder="URL da imagem 3">
+                    </div>
+                </article>
+                <article class="dados-entrada-criar">
+                    <div class="pergunta-minimizada"><h2>Pergunta 3</h2><img onclick="alternarPergunta(this)" src="img/create.svg" alt="expandir pergunta"></div>
+                    <div class="pergunta-expandida oculto" onclick="alternarPergunta(this)">
+                        <h2>Pergunta 3</h2>
+                        <input type="text" placeholder="Texto da pergunta">
+                        <input type="text" placeholder="Cor de fundo da pergunta">
+                        <h2>Resposta correta</h2>
+                        <input type="text" placeholder="Resposta correta">
+                        <input type="text" placeholder="URL da imagem">
+                        <h2>Respostas incorretas</h2>
+                        <input type="text" placeholder="Resposta incorreta 1">
+                        <input type="text" placeholder="URL da imagem 1">
+                        <input type="text" placeholder="Resposta incorreta 2">
+                        <input type="text" placeholder="URL da imagem 2">
+                        <input type="text" placeholder="Resposta incorreta 3">
+                        <input type="text" placeholder="URL da imagem 3">
+                    </div>
+                </article>
+                <button>Prosseguir pra criar níveis</button>
+            </div>
+        </div>
+        <div class="tela-3-3">
+            <div class="container-comeco">
+                <h1>Agora, decida os níveis</h1> 
+                <article class="dados-entrada-criar">
+                    <div class="pergunta-minimizada oculto"><h2>Nível 1</h2><img onclick="alternarPergunta(this)" src="img/create.svg" alt="expandir pergunta"></div>
+                    <div class="pergunta-expandida" onclick="alternarPergunta(this)">
+                        <h2>Nível 1</h2>
+                        <input type="text" placeholder="Título do nível">
+                        <input type="text" placeholder="% de acerto mínima">
+                        <input type="text" placeholder="URL da imagem do nível">
+                        <input type="text" placeholder="Descrição do nível">
+                    </div>
+                </article>
+                <article class="dados-entrada-criar">
+                    <div class="pergunta-minimizada"><h2>Nível 2</h2><img onclick="alternarPergunta(this)" src="img/create.svg" alt="expandir pergunta"></div>
+                    <div class="pergunta-expandida oculto" onclick="alternarPergunta(this)">
+                        <h2>Nível 2</h2>
+                        <input type="text" placeholder="Título do nível">
+                        <input type="text" placeholder="% de acerto mínima">
+                        <input type="text" placeholder="URL da imagem do nível">
+                        <input type="text" placeholder="Descrição do nível">
+                    </div>
+                </article>
+                <article class="dados-entrada-criar">
+                    <div class="pergunta-minimizada"><h2>Nível 3</h2><img onclick="alternarPergunta(this)" src="img/create.svg" alt="expandir pergunta"></div>
+                    <div class="pergunta-expandida oculto" onclick="alternarPergunta(this)">
+                        <h2>Nível 3</h2>
+                        <input type="text" placeholder="Título do nível">
+                        <input type="text" placeholder="% de acerto mínima">
+                        <input type="text" placeholder="URL da imagem do nível">
+                        <input type="text" placeholder="Descrição do nível">
+                    </div>
+                </article>
+                <button>Finalizar Quizz</button>
+            </div>
+        </div>
+        <div class="tela-3-4">
+            <div class="container-comeco fim">
+                <h1>Seu quizz está pronto!</h1>
+                    <div class="quizz fim">
+                        <img src='img/Quizz-titulo.svg'>
+                        <div class="nomeDoQuiz fim">
+                            O quão Potterhead é você?
+                        </div>
+                    </div>
+                    <button class="reinicia-quizz fim">Acessar Quizz</button>
+                    <button onclick="irParaPaginaInicial()" class="retorna-inicio fim">Voltar pra home</button>
+                </div>
+            </div>
+        </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
