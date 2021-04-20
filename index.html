@@ -13,16 +13,34 @@
 </head>
 <body>
     <div class="topo">BuzzQuizz</div>
-    <div class="criarQuizzContainer">
+    <div class="criarQuizz container">
         <div>não criou nenhum quizz</div> 
-        <div class="criarQuizz">Criar Quizz</div>
+        <button class="botaoCriarQuizz">Criar Quizz</button>
     </div>
-    <div class="todosQuizzesTitulo">Todos os Quizzes</div>
-    <div class="todosQuizzesContainer">
-        <div class="quizz">Quiz Teste</div>
+    <div class="seusQuizzesTitulo container oculto">
+        <h2>Seus Quizzes</h2> 
+        <ion-icon class="addQuizz" name="add-circle-sharp"></ion-icon>
     </div>
-    
-
+    <div class="seusQuizzes container oculto">
+        <div class="quizz">
+            <div class="nomeDoQuiz">Simpsons</div>
+        </div>
+    </div>
+    <div class="todosQuizzesTitulo container">Todos os Quizzes</div>
+    <div class="todosQuizzes container">
+        <div class="quizz">
+            <div class="nomeDoQuiz">Simpsons</div>
+        </div>
+        <div class="quizz">
+            <div class="nomeDoQuiz">Simpsons</div>
+        </div>
+        <div class="quizz">
+            <div class="nomeDoQuiz">Simpsons</div>
+        </div>
+        <div class="quizz">
+            <div class="nomeDoQuiz">Simpsons</div>
+        </div>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
     <script src="Scripts\script.js"></script>

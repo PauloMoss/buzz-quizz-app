@@ -50,6 +50,7 @@ strong {
     font-weight: bold;
 }
 button {
+	background-color: inherit;
     border: none;
 	cursor: pointer;
     outline: 0;
