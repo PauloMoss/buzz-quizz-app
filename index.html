@@ -18,53 +18,18 @@
             <div>não criou nenhum quizz</div> 
             <button class="botaoCriarQuizz">Criar Quizz</button>
         </div>
-        <div class="seusQuizzesTitulo container oculto">
+        <div class="seusQuizzesTitulo container">
             <h2>Seus Quizzes</h2> 
             <ion-icon class="addQuizz" name="add-circle-sharp"></ion-icon>
         </div>
-        <div class="seusQuizzes container oculto">
-            <div class="quizz">
-                <div class="nomeDoQuiz">Simpsons</div>
-            </div>
+        <ul class="seusQuizzes container"></ul>
+        <div class="todosQuizzesTitulo container">
+            <h2>Todos os Quizzes</h2>
         </div>
-        <div class="todosQuizzesTitulo container">Todos os Quizzes</div>
-        <div class="todosQuizzes container">
-        </div>
+        <ul class="todosQuizzes container"></ul>
     </div>
     <div class="pagina-Quizz oculto">
-        <div class="Quizz-titulo"><img src="img/Quizz-titulo.svg" alt=""><div class="titulo">O quão Potterhead é você?</div></div>
-        <article class="container-pergunta">
-            <div class="pergunta" style="background-color:#434CA0;">Em qual animal Olho-Tonto Moody transfigurou Malfoy?</div>
-            <article class="respostas">
-                <div class="resposta">
-                    <img src="img/resp1.svg" alt="">
-                    <p>Gatíneo</p>
-                </div>
-                <div class="resposta">
-                    <img src="img/resp2.svg" alt="">
-                    <p>Ratata</p>
-                </div>
-                <div class="resposta">
-                    <img src="img/resp3.svg" alt="">
-                    <p>Sapo gordo</p>
-                </div>
-                <div class="resposta">
-                    <img src="img/resp4.svg" alt="">
-                    <p>Mustela putorius (o Furão)</p>
-                </div>
-            </article>
-        </article>
-        <article class="container-resultado">
-            <div class="resultado" style="background-color:#00FF00;">88% de acerto: Você é praticamente um aluno de Hogwarts!</div>
-            <article class="resultados">
-                <div class="imagem-resultado">
-                    <img src="img/resultado-img.svg" alt="">
-                </div>
-                <div class="mensagem-resultado">
-                    Parabéns Potterhead! Bem-vindx a Hogwarts, aproveite o loop infinito de comida e clique no botão abaixo para usar o vira-tempo e reiniciar este teste.
-                </div>
-            </article>
-        </article>
+        
         <button class="reinicia-quizz">Reiniciar Quizz</button>
         <button onclick="irParaPaginaInicial()" class="retorna-inicio">Voltar pra home</button>
     </div>
