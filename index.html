@@ -13,17 +13,24 @@
 </head>
 <body>
     <div class="topo">BuzzQuizz</div>
-    <div class="pagina-inicial escondido">
-        <div class="criarQuizzContainer">
+    <div class="pagina-inicial oculto">
+        <div class="criarQuizz container">
             <div>não criou nenhum quizz</div> 
-            <div class="criarQuizz">Criar Quizz</div>
+            <button class="botaoCriarQuizz">Criar Quizz</button>
         </div>
-        <div class="todosQuizzesTitulo">Todos os Quizzes</div>
-        <div class="todosQuizzesContainer">
-            <div class="quizz">Quiz Teste</div>
+        <div class="seusQuizzesTitulo container oculto">
+            <h2>Seus Quizzes</h2> 
+            <ion-icon class="addQuizz" name="add-circle-sharp"></ion-icon>
+        </div>
+        <div class="seusQuizzes container oculto">
+            <div class="quizz">
+                <div class="nomeDoQuiz">Simpsons</div>
+            </div>
+        </div>
+        <div class="todosQuizzesTitulo container">Todos os Quizzes</div>
+        <div class="todosQuizzes container">
         </div>
     </div>
-
     <div class="pagina-Quizz">
         <div class="Quizz-titulo"><img src="img/Quizz-titulo.svg" alt=""><div class="titulo">O quão Potterhead é você?</div></div>
         <article class="container-pergunta">

@@ -1,6 +1,14 @@
 body {
     background-color: #FAFAFA;
     font-family: 'Roboto', sans-serif;
+<<<<<<< HEAD
+=======
+}
+h2 {
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 23px;
+>>>>>>> 1591e82b3f64612129dda6e43ba5c3492fda857a
 }
 .topo {
     position: fixed;
@@ -19,40 +27,68 @@ body {
     line-height: 43px;
     z-index: 5;
 }
-.criarQuizzContainer {
+.container {
+    width: 1050px;
+    margin:0 auto;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
     align-items: center;
-    width: 70%;
-    height: 181px;
-    margin: 146px auto 77px auto;
-    border: 1px dashed #D5D5D5;
-    border-radius: 5px;
 }
 .criarQuizz {
+    justify-content: center;
+    flex-direction: column;
+    height: 181px;
+    margin-top: 146px;
+    border: 1px dashed #D5D5D5;
+    border-radius: 5px;
+    color: #B9B9B9;
+}
+.botaoCriarQuizz {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 136px;
     height: 40px;
+    border: 1px dashed #EC362D;
+    border-radius: 50px;
     color: #EC362D;
 }
-.todosQuizzesContainer {
-    display: flex;
+.addQuizz {
+    color: #EC362D;
+    font-size: 25px;
+}
+.seusQuizzesTitulo {
+    margin-top: 146px;
+}
+.seusQuizzes {
     flex-wrap: wrap;
-    width: 70%;
-    height: 400px;
-    margin: 0 auto;
 }
 .todosQuizzesTitulo {
-    width: 70%;
-    margin: 0 auto;
+    margin-top: 77px;
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 23px;
+}
+.todosQuizzes {
+    flex-wrap: wrap;
+    margin-top: 5px;
 }
 .quizz {
-    width: 380px;
+    position: relative;
+    width: 340px;
     height: 181px;
-    background-color: blue;
+    color: #FFFFFF;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.5) 64.58%, #000000 100%);
+    border-radius: 5px;
+    background-size: cover;
+    margin: 0 10px 10px 0;
+}
+.container img {
+    position: absolute;
+    width: 340px;
+    height: 181px;    
+    object-fit: cover;
+    border-radius: 5px;
+    z-index: -1;
 }
 .pagina-Quizz {
     position: relative;
@@ -63,6 +99,11 @@ body {
     align-items: center;
     justify-content: center;
     flex-direction: column;
+}
+.nomeDoQuiz {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
 }
 .Quizz-titulo {
     background: rgba(0, 0, 0, 0.60);
@@ -129,9 +170,6 @@ body {
     text-align: left;
     color: #000;
 }
-.escondido {
-    display: none;
-}
 div.correta p{
     color: #009C22;
 }
@@ -166,4 +204,7 @@ article.container-resultado{
     letter-spacing: 0em;
     margin-left: 21px;
     line-break:strict;
+}
+.oculto {
+    display: none;
 }
