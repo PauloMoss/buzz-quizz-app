@@ -91,22 +91,23 @@ function adicionarPergunta() {
     }
     renderizarRespostas(perguntas)
 }
+let respostas = [];
 function renderizarRespostas(perguntas) {
-    let respostas = [];
+    
     for(let i =0; i < perguntas.length; i++) {
         respostas.push(perguntas[i].answers)
     }
-    console.log( respostas)
     for(let i = 0; i < respostas.length; i++) {
         const elementoRespostas = document.querySelector(`.container-pergunta article:nth-of-type(${i+1})`)
-        console.log(elementoRespostas)
-        for(let j = 0; j < respostas[i].length; j++)
-        elementoRespostas.innerHTML += `
-        <div class="resposta">
-            <img src=${respostas[i][j].image}>
-            <p>${respostas[i][j].text}</p>
-        </div>
-        `;
+        respostas[i].sort(() => Math.random() - 0.5)
+        for(let j = 0; j < respostas[i].length; j++) {
+            elementoRespostas.innerHTML += `
+            <div class="resposta" onclick="selecionarResposta(this)">
+                <img src=${respostas[i][j].image}>
+                <p>${respostas[i][j].text}</p>
+            </div>
+            `;
+        }
     }
 }
 function adicionarButaoVoltar() {
@@ -115,8 +116,27 @@ function adicionarButaoVoltar() {
         <button onclick="irParaPaginaInicial()" class="retorna-inicio">Voltar pra home</button>
     `
 }
+function selecionarResposta(respostaSelecionada) {
+    const selecionado = document.querySelector(".selecionado")
+    if (selecionado !== null) {
+        respostaSelecionada.classList.remove('selecionado');
+    } 
+    respostaSelecionada.classList.add('selecionado');
+    respostaSelecionada.removeAttribute("onclick");
+
+    const perguntaRespondida = respostaSelecionada.parentNode;
+    const todasRespostas = perguntaRespondida.children;
+    for(let i = 0; i < todasRespostas.length; i++) {
+        if(!(todasRespostas[i].classList.contains("selecionado"))) {
+            todasRespostas[i].classList.add("opacidade")
+            todasRespostas[i].removeAttribute("onclick");
+        }
+    }
+}
+
 function irParaPaginaInicial() {
     document.querySelector('.pagina-inicial').classList.remove('oculto');
     document.querySelector('.pagina-Quizz').classList.add('oculto');
     document.querySelector('.pagina-criar-Quizz').classList.add('oculto');
 }
+

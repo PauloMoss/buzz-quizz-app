@@ -221,3 +221,6 @@ article.container-resultado{
 .oculto {
     display: none;
 }
+.opacidade {
+    opacity: 0.3;
+}
