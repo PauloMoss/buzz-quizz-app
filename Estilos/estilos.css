@@ -1,14 +1,11 @@
 body {
     background-color: #FAFAFA;
     font-family: 'Roboto', sans-serif;
-<<<<<<< HEAD
-=======
 }
 h2 {
     font-weight: bold;
     font-size: 20px;
     line-height: 23px;
->>>>>>> 1591e82b3f64612129dda6e43ba5c3492fda857a
 }
 .topo {
     position: fixed;
@@ -204,6 +201,24 @@ article.container-resultado{
     letter-spacing: 0em;
     margin-left: 21px;
     line-break:strict;
+}
+.pagina-Quizz button{
+    height: 52px;
+    width: 262px;
+    border-radius: 15px;
+    font-size: 21px;
+    font-weight: 400;
+    line-height: 25px;
+    letter-spacing: 0em;
+}
+.reinicia-quizz {
+    color: #FFF5F4;
+    background: #EC362D;
+    margin: 36px auto 16px auto;
+}
+.retorna-inicio {
+    color: #818181; 
+    margin: 0 auto 85px auto;
 }
 .oculto {
     display: none;

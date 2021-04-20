@@ -18,3 +18,9 @@ function renderizarQuizzes(resposta) {
         `;
     }
 }
+
+function irParaPaginaInicial() {
+    document.querySelector('.pagina-inicial').classList.remove('oculto');
+    document.querySelector('.pagina-Quizz').classList.add('oculto');
+    document.querySelector('.pagina-criar-Quizz').classList.add('oculto');
+}
