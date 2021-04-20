@@ -53,6 +53,7 @@ h2 {
     color: #EC362D;
     font-size: 25px;
 }
+
 .seusQuizzesTitulo {
     margin-top: 146px;
 }
@@ -61,9 +62,6 @@ h2 {
 }
 .todosQuizzesTitulo {
     margin-top: 77px;
-    font-weight: bold;
-    font-size: 20px;
-    line-height: 23px;
 }
 .todosQuizzes {
     flex-wrap: wrap;
