@@ -144,9 +144,9 @@ function selecionarResposta(respostaSelecionada) {
     } 
     respostaSelecionada.classList.add('selecionado');
     respostaSelecionada.removeAttribute("onclick");
-    destacarImagemSelecionada(respostaSelecionada)
-    setTimeout(scrollarProximaPergunta, 2000);
+    destacarImagemSelecionada(respostaSelecionada);
     renderizarResultado();
+    setTimeout(scrollarProximaPergunta, 2000);
 }
 function destacarImagemSelecionada(respostaSelecionada) {
     const perguntaRespondida = respostaSelecionada.parentNode;
@@ -170,13 +170,23 @@ function verificarRespostaCerta(respostasDaPergunta) {
             respostasDaPergunta[i].classList.add("errada")
         }
     }
+    atualizarPerguntaRespondida()
 }
-function scrollarProximaPergunta() {
-    const perguntaNaorespondida = document.querySelector(".naoRespondida");
+let perguntaNaorespondida = document.querySelector(".naoRespondida");
+function atualizarPerguntaRespondida() {
+    let perguntaNaorespondida = document.querySelector(".naoRespondida");
     perguntaNaorespondida.classList.remove('naoRespondida');
     perguntaNaorespondida.classList.add('respondida');
-    perguntaNaorespondida.parentNode.nextSibling.nextSibling.scrollIntoView(false);
 }
+function scrollarProximaPergunta() {
+    perguntaNaorespondida = document.querySelector(".naoRespondida");
+    if(perguntaNaorespondida!==null) {
+        perguntaNaorespondida.scrollIntoView({block: "center", behavior: "smooth"});
+    } else {
+        alert("Fazer scrolar para resultado");
+    }
+}
+
 function renderizarResultado() {
     if(contadorDeJogadas===perguntas.length) {
         const elementoResultado = document.querySelector(".container-resultado")
