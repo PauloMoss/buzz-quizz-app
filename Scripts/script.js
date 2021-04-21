@@ -69,7 +69,7 @@ function paginaDoQuizz() {
 }
 function adicionarCapaDoQuizz() {
     paginaQuizz.innerHTML = `
-    <div class="Quizz-titulo"><img src=${quizSelecionado.image}> alt="">
+    <div class="Quizz-titulo"><img src=${quizSelecionado.image} alt="">
         <div class="titulo">${quizSelecionado.title}</div>
     </div>
     <article class="container-pergunta"></article>
