@@ -17,7 +17,6 @@ const seusQuizzesTitulo = document.querySelector(".seusQuizzesTitulo");
 const todosQuizzesTitulo = document.querySelector(".todosQuizzesTitulo");
 const ulTodosQuizzes = document.querySelector(".todosQuizzes");
 function renderizarTodosQuizzes() {
-    //usar forEach aqui
     ulTodosQuizzes.innerHTML = "";
     for(let i = 0; i < listaDeQuizzes.length; i++) {
         ulTodosQuizzes.innerHTML += `
@@ -56,7 +55,6 @@ function escolherQuizz(selecionado) {
             quizSelecionado = listaDeQuizzes[i];
         }
     }
-    console.log()
     paginaDoQuizz()
     adicionarCapaDoQuizz();
     adicionarPergunta()
@@ -73,21 +71,19 @@ function adicionarCapaDoQuizz() {
     <div class="Quizz-titulo"><img src=${quizSelecionado.image}>
         <div class="titulo">${quizSelecionado.title}</div>
     </div>
-    <article class="container-pergunta"></article>
-    <article class="container-resultado"></article>
     `;
 }
 let perguntas;
 function adicionarPergunta() {
-    const elementoPerguntas = document.querySelector(".container-pergunta")
     perguntas = quizSelecionado.questions;
-    console.log(perguntas)
     for(let i = 0; i < perguntas.length; i++) {
-        elementoPerguntas.innerHTML += `
-        <div class="pergunta" style="background-color:${perguntas[i].color};">
+        paginaQuizz.innerHTML += `
+        <article class="container-pergunta">
+            <div class="pergunta" style="background-color:${perguntas[i].color};">
             ${perguntas[i].title}
-        </div>
-        <article class="respostas naoRespondida"></article>
+            </div>
+            <article class="respostas naoRespondida"></article>
+        </article>
         `;
     }
     renderizarRespostas(perguntas)
@@ -98,22 +94,23 @@ function renderizarRespostas(perguntas) {
     for(let i =0; i < perguntas.length; i++) {
         respostas.push(perguntas[i].answers)
     }
-    for(let i = 0; i < respostas.length; i++) {
-        const elementoRespostas = document.querySelector(`.container-pergunta article:nth-of-type(${i+1})`)
-        respostas[i].sort(() => Math.random() - 0.5)
-        for(let j = 0; j < respostas[i].length; j++) {
+    respostas.forEach(adicionarResposta)
+}
+function adicionarResposta(elemento, i) {
+    const elementoRespostas = document.querySelector(`.pagina-Quizz article:nth-of-type(${i+1}) .respostas`)
+    elemento.sort(() => Math.random() - 0.5)
+        for(let j = 0; j < elemento.length; j++) {
             elementoRespostas.innerHTML += `
             <div class="resposta" onclick="selecionarResposta(this)">
-                <img src=${respostas[i][j].image}>
-                <p>${respostas[i][j].text}</p>
+                <img src=${elemento[j].image}>
+                <p>${elemento[j].text}</p>
             </div>
             `;
-            if(respostas[i][j].isCorrectAnswer) {
+            if(elemento[j].isCorrectAnswer) {
                 const respostaCorreta = elementoRespostas.children[j];
                 respostaCorreta.setAttribute("id", "certa")
             }
         }
-    }
 }
 function adicionarButaoVoltar() {
     paginaQuizz.innerHTML += `
@@ -142,6 +139,7 @@ function selecionarResposta(respostaSelecionada) {
     }
     verificarRespostaCerta(todasRespostas)
     setTimeout(scrollarProximaPergunta, 2000);
+    renderizarResultado();
 }
 
 function verificarRespostaCerta(todasRespostas) {
@@ -154,14 +152,6 @@ function verificarRespostaCerta(todasRespostas) {
         } else {
             todasRespostas[i].classList.add("errada")
         }
-    }
-    if(contadorDeJogadas===perguntas.length) {
-        titulosResultado =[];
-        imagensResultado =[];
-        textosResultado =[];
-        acertoMinimoResultado =[];
-        guardarResultados(quizSelecionado.levels);
-        renderizarResultado();
     }
 }
 function scrollarProximaPergunta() {
@@ -185,34 +175,38 @@ function guardarResultados(Niveis) {
     }
 }
 function renderizarResultado() {
-    const porcentagemAcerto = Number(100*contadorDeAcertos/contadorDeJogadas);
-    const elementoResultado = document.querySelector(".container-resultado")
-    const perguntas = quizSelecionado.questions;
-    let textoDoNivel;
-    let imagemDoNivel;
-    for(let j=0; j < acertoMinimoResultado.length; j++){
-        if (porcentagemAcerto >= acertoMinimoResultado[j]){
-            indiceResultado = j;
-            descriçãoDoNivel = titulosResultado[j]
-            textoDoNivel = textosResultado[j]
-            imagemDoNivel = imagensResultado[j]
+    if(contadorDeJogadas===perguntas.length) {
+        guardarResultados(quizSelecionado.levels);
+        paginaQuizz.innerHTML += `
+        <article class="container-resultado"></article>
+        `
+        const porcentagemAcerto = Number(100*contadorDeAcertos/contadorDeJogadas);
+        const elementoResultado = document.querySelector(".container-resultado")
+        let textoDoNivel;
+        let imagemDoNivel;
+        for(let j=0; j < acertoMinimoResultado.length; j++){
+            if (porcentagemAcerto >= acertoMinimoResultado[j]){
+                indiceResultado = j;
+                descriçãoDoNivel = titulosResultado[j]
+                textoDoNivel = textosResultado[j]
+                imagemDoNivel = imagensResultado[j]
+            }
         }
-    }
-    console.log(acertoMinimoResultado)
-    for(let i = 0; i < perguntas.length; i++) {
-        elementoResultado.innerHTML = `
-        <div class="resultado" style="background-color:#EC362D">
-            ${porcentagemAcerto.toFixed(0)}% de acerto: ${descriçãoDoNivel}
-        </div>
-        <article class="resultados">
-            <div class="imagem-resultado">
-                <img src=${imagemDoNivel} alt="">
+        console.log(acertoMinimoResultado)
+        
+            elementoResultado.innerHTML = `
+            <div class="resultado" style="background-color:#EC362D">
+                ${porcentagemAcerto.toFixed(0)}% de acerto: ${descriçãoDoNivel}
             </div>
-            <div class="mensagem-resultado">
-                ${textoDoNivel}
-            </div>
-        </article>
-        `;
+            <article class="resultados">
+                <div class="imagem-resultado">
+                    <img src=${imagemDoNivel} alt="">
+                </div>
+                <div class="mensagem-resultado">
+                    ${textoDoNivel}
+                </div>
+            </article>
+            `;
     }
 }
 function irParaPaginaInicial() {
