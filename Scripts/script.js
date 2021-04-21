@@ -56,6 +56,7 @@ function escolherQuizz(selecionado) {
             quizSelecionado = listaDeQuizzes[i];
         }
     }
+    console.log()
     paginaDoQuizz()
     adicionarCapaDoQuizz();
     adicionarPergunta()
@@ -86,14 +87,14 @@ function adicionarPergunta() {
         <div class="pergunta" style="background-color:${perguntas[i].color};">
             ${perguntas[i].title}
         </div>
-        <article class="respostas"></article>
+        <article class="respostas naoRespondida"></article>
         `;
     }
     renderizarRespostas(perguntas)
 }
-let respostas = [];
+
 function renderizarRespostas(perguntas) {
-    
+    let respostas = [];
     for(let i =0; i < perguntas.length; i++) {
         respostas.push(perguntas[i].answers)
     }
@@ -112,12 +113,12 @@ function renderizarRespostas(perguntas) {
 }
 function adicionarButaoVoltar() {
     paginaQuizz.innerHTML += `
-        <button class="reinicia-quizz">Reiniciar Quizz</button>
+        <button class="reinicia-quizz" onclick="resetarQuizz()">Reiniciar Quizz</button>
         <button onclick="irParaPaginaInicial()" class="retorna-inicio">Voltar pra home</button>
     `
 }
 function selecionarResposta(respostaSelecionada) {
-    const selecionado = document.querySelector(".selecionado")
+    const selecionado = document.querySelector(".selecionado");
     if (selecionado !== null) {
         respostaSelecionada.classList.remove('selecionado');
     } 
@@ -125,6 +126,7 @@ function selecionarResposta(respostaSelecionada) {
     respostaSelecionada.removeAttribute("onclick");
 
     const perguntaRespondida = respostaSelecionada.parentNode;
+    console.log(perguntaRespondida)
     const todasRespostas = perguntaRespondida.children;
     for(let i = 0; i < todasRespostas.length; i++) {
         if(!(todasRespostas[i].classList.contains("selecionado"))) {
@@ -132,6 +134,13 @@ function selecionarResposta(respostaSelecionada) {
             todasRespostas[i].removeAttribute("onclick");
         }
     }
+    setTimeout(scrollarProximaPergunta, 2000);
+}
+function scrollarProximaPergunta() {
+    const perguntaNaorespondida = document.querySelector(".naoRespondida");
+    perguntaNaorespondida.classList.remove('naoRespondida');
+    perguntaNaorespondida.classList.add('respondida');
+    perguntaNaorespondida.scrollIntoView();  
 }
 
 function irParaPaginaInicial() {
@@ -140,3 +149,9 @@ function irParaPaginaInicial() {
     document.querySelector('.pagina-criar-Quizz').classList.add('oculto');
 }
 
+function resetarQuizz() {
+    adicionarCapaDoQuizz();
+    adicionarPergunta()
+    adicionarButaoVoltar()
+    window.scrollTo(0, 0);
+}
