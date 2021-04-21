@@ -70,17 +70,17 @@ function paginaDoQuizz() {
 }
 function adicionarCapaDoQuizz() {
     paginaQuizz.innerHTML = `
-    <div class="Quizz-titulo"><img src=${quizSelecionado.image}> alt="">
+    <div class="Quizz-titulo"><img src=${quizSelecionado.image}>
         <div class="titulo">${quizSelecionado.title}</div>
     </div>
     <article class="container-pergunta"></article>
     <article class="container-resultado"></article>
     `;
 }
-
+let perguntas;
 function adicionarPergunta() {
     const elementoPerguntas = document.querySelector(".container-pergunta")
-    const perguntas = quizSelecionado.questions;
+    perguntas = quizSelecionado.questions;
     console.log(perguntas)
     for(let i = 0; i < perguntas.length; i++) {
         elementoPerguntas.innerHTML += `
@@ -108,6 +108,10 @@ function renderizarRespostas(perguntas) {
                 <p>${respostas[i][j].text}</p>
             </div>
             `;
+            if(respostas[i][j].isCorrectAnswer) {
+                const respostaCorreta = elementoRespostas.children[j];
+                respostaCorreta.setAttribute("id", "certa")
+            }
         }
     }
 }
@@ -117,7 +121,10 @@ function adicionarButaoVoltar() {
         <button onclick="irParaPaginaInicial()" class="retorna-inicio">Voltar pra home</button>
     `
 }
+let contadorDeJogadas=0;
+let contadorDeAcertos=0;
 function selecionarResposta(respostaSelecionada) {
+    contadorDeJogadas+=1;
     const selecionado = document.querySelector(".selecionado");
     if (selecionado !== null) {
         respostaSelecionada.classList.remove('selecionado');
@@ -126,7 +133,6 @@ function selecionarResposta(respostaSelecionada) {
     respostaSelecionada.removeAttribute("onclick");
 
     const perguntaRespondida = respostaSelecionada.parentNode;
-    console.log(perguntaRespondida)
     const todasRespostas = perguntaRespondida.children;
     for(let i = 0; i < todasRespostas.length; i++) {
         if(!(todasRespostas[i].classList.contains("selecionado"))) {
@@ -134,7 +140,24 @@ function selecionarResposta(respostaSelecionada) {
             todasRespostas[i].removeAttribute("onclick");
         }
     }
+    verificarRespostaCerta(todasRespostas)
     setTimeout(scrollarProximaPergunta, 2000);
+}
+
+function verificarRespostaCerta(todasRespostas) {
+    for(let i = 0; i < todasRespostas.length; i++) {
+        if(todasRespostas[i].id==="certa" && todasRespostas[i].classList.contains("selecionado")) {
+            todasRespostas[i].classList.add("correta")
+            contadorDeAcertos+=1;
+        } else if(todasRespostas[i].id==="certa") {
+            todasRespostas[i].classList.add("correta")
+        } else {
+            todasRespostas[i].classList.add("errada")
+        }
+    }
+    if(contadorDeJogadas===perguntas.length) {
+        renderizarResultado()
+    }
 }
 function scrollarProximaPergunta() {
     const perguntaNaorespondida = document.querySelector(".naoRespondida");
@@ -143,15 +166,39 @@ function scrollarProximaPergunta() {
     perguntaNaorespondida.scrollIntoView();  
 }
 
+let descriçãoDoNivel = "Você é praticamente um aluno de Hogwarts!";
+
+function renderizarResultado() {
+    const porcentagemAcerto = Number(100*contadorDeAcertos/contadorDeJogadas);
+    const elementoResultado = document.querySelector(".container-resultado")
+    console.log(elementoResultado)
+    const perguntas = quizSelecionado.questions;
+    for(let i = 0; i < perguntas.length; i++) {
+        elementoResultado.innerHTML = `
+        <div class="resultado" style="background-color:#EC362D">
+            ${porcentagemAcerto}% de acerto: ${descriçãoDoNivel}
+        </div>
+        <article class="resultados">
+            <div class="imagem-resultado">
+                <img src="img/resultado-img.svg" alt="">
+            </div>
+            <div class="mensagem-resultado">
+                Parabéns Potterhead! Bem-vindx a Hogwarts, aproveite o loop infinito de comida e clique no botão abaixo para usar o vira-tempo e reiniciar este teste.
+            </div>
+        </article>
+        `;
+    }
+}
 function irParaPaginaInicial() {
     document.querySelector('.pagina-inicial').classList.remove('oculto');
     document.querySelector('.pagina-Quizz').classList.add('oculto');
     document.querySelector('.pagina-criar-Quizz').classList.add('oculto');
 }
-
 function resetarQuizz() {
     adicionarCapaDoQuizz();
     adicionarPergunta()
     adicionarButaoVoltar()
+    contadorDeJogadas=0;
+    contadorDeAcertos=0;
     window.scrollTo(0, 0);
 }

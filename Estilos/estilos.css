@@ -165,13 +165,10 @@ h2 {
     text-align: left;
     color: #000;
 }
-div.correta p{
+div.correta p {
     color: #009C22;
 }
-div.errada {
-    filter:opacity(30%);
-}
-.errada p {
+div.errada p {
     color:#FF4B4B;
 }
 article.container-resultado{
