@@ -114,6 +114,7 @@ function adicionarResposta(elemento, i) {
 }
 function adicionarButaoVoltar() {
     paginaQuizz.innerHTML += `
+        <article class="container-resultado oculto"></article>
         <button class="reinicia-quizz" onclick="resetarQuizz()">Reiniciar Quizz</button>
         <button onclick="irParaPaginaInicial()" class="retorna-inicio">Voltar pra home</button>
     `
@@ -177,11 +178,9 @@ function guardarResultados(Niveis) {
 function renderizarResultado() {
     if(contadorDeJogadas===perguntas.length) {
         guardarResultados(quizSelecionado.levels);
-        paginaQuizz.innerHTML += `
-        <article class="container-resultado"></article>
-        `
         const porcentagemAcerto = Number(100*contadorDeAcertos/contadorDeJogadas);
         const elementoResultado = document.querySelector(".container-resultado")
+        elementoResultado.classList.remove('oculto')
         let textoDoNivel;
         let imagemDoNivel;
         for(let j=0; j < acertoMinimoResultado.length; j++){
@@ -191,9 +190,7 @@ function renderizarResultado() {
                 textoDoNivel = textosResultado[j]
                 imagemDoNivel = imagensResultado[j]
             }
-        }
-        console.log(acertoMinimoResultado)
-        
+        }       
             elementoResultado.innerHTML = `
             <div class="resultado" style="background-color:#EC362D">
                 ${porcentagemAcerto.toFixed(0)}% de acerto: ${descriçãoDoNivel}
@@ -288,7 +285,9 @@ function validarUrl(url) {
     }
     return true;
 }
-
+function validarCorHex(corHexadecimal) {
+    return corHexadecimal.match(/^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$/i) !== null;
+}
 /*
 export const isValidUrl = (url) => {
     try {
