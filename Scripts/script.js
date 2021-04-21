@@ -56,6 +56,7 @@ function escolherQuizz(selecionado) {
             quizSelecionado = listaDeQuizzes[i];
         }
     }
+    console.log()
     paginaDoQuizz()
     adicionarCapaDoQuizz();
     adicionarPergunta()
@@ -69,31 +70,31 @@ function paginaDoQuizz() {
 }
 function adicionarCapaDoQuizz() {
     paginaQuizz.innerHTML = `
-    <div class="Quizz-titulo"><img src=${quizSelecionado.image} alt="">
+    <div class="Quizz-titulo"><img src=${quizSelecionado.image}>
         <div class="titulo">${quizSelecionado.title}</div>
     </div>
     <article class="container-pergunta"></article>
     <article class="container-resultado"></article>
     `;
 }
-
+let perguntas;
 function adicionarPergunta() {
     const elementoPerguntas = document.querySelector(".container-pergunta")
-    const perguntas = quizSelecionado.questions;
+    perguntas = quizSelecionado.questions;
     console.log(perguntas)
     for(let i = 0; i < perguntas.length; i++) {
         elementoPerguntas.innerHTML += `
         <div class="pergunta" style="background-color:${perguntas[i].color};">
             ${perguntas[i].title}
         </div>
-        <article class="respostas"></article>
+        <article class="respostas naoRespondida"></article>
         `;
     }
     renderizarRespostas(perguntas)
 }
-let respostas = [];
+
 function renderizarRespostas(perguntas) {
-    
+    let respostas = [];
     for(let i =0; i < perguntas.length; i++) {
         respostas.push(perguntas[i].answers)
     }
@@ -107,17 +108,24 @@ function renderizarRespostas(perguntas) {
                 <p>${respostas[i][j].text}</p>
             </div>
             `;
+            if(respostas[i][j].isCorrectAnswer) {
+                const respostaCorreta = elementoRespostas.children[j];
+                respostaCorreta.setAttribute("id", "certa")
+            }
         }
     }
 }
 function adicionarButaoVoltar() {
     paginaQuizz.innerHTML += `
-        <button class="reinicia-quizz">Reiniciar Quizz</button>
+        <button class="reinicia-quizz" onclick="resetarQuizz()">Reiniciar Quizz</button>
         <button onclick="irParaPaginaInicial()" class="retorna-inicio">Voltar pra home</button>
     `
 }
+let contadorDeJogadas=0;
+let contadorDeAcertos=0;
 function selecionarResposta(respostaSelecionada) {
-    const selecionado = document.querySelector(".selecionado")
+    contadorDeJogadas+=1;
+    const selecionado = document.querySelector(".selecionado");
     if (selecionado !== null) {
         respostaSelecionada.classList.remove('selecionado');
     } 
@@ -132,11 +140,169 @@ function selecionarResposta(respostaSelecionada) {
             todasRespostas[i].removeAttribute("onclick");
         }
     }
+    verificarRespostaCerta(todasRespostas)
+    setTimeout(scrollarProximaPergunta, 2000);
 }
 
+function verificarRespostaCerta(todasRespostas) {
+    for(let i = 0; i < todasRespostas.length; i++) {
+        if(todasRespostas[i].id==="certa" && todasRespostas[i].classList.contains("selecionado")) {
+            todasRespostas[i].classList.add("correta")
+            contadorDeAcertos+=1;
+        } else if(todasRespostas[i].id==="certa") {
+            todasRespostas[i].classList.add("correta")
+        } else {
+            todasRespostas[i].classList.add("errada")
+        }
+    }
+    if(contadorDeJogadas===perguntas.length) {
+        titulosResultado =[];
+        imagensResultado =[];
+        textosResultado =[];
+        acertoMinimoResultado =[];
+        guardarResultados(quizSelecionado.levels);
+        renderizarResultado();
+    }
+}
+function scrollarProximaPergunta() {
+    const perguntaNaorespondida = document.querySelector(".naoRespondida");
+    perguntaNaorespondida.classList.remove('naoRespondida');
+    perguntaNaorespondida.classList.add('respondida');
+    perguntaNaorespondida.scrollIntoView();  
+}
+let descriçãoDoNivel;
+let titulosResultado =[];
+let imagensResultado =[];
+let textosResultado =[];
+let acertoMinimoResultado =[];
+let indiceResultado;
+function guardarResultados(Niveis) {
+    for(let i=0; i<Niveis.length; i++) {
+        titulosResultado.push(Niveis[i].title)
+        imagensResultado.push(Niveis[i].image)
+        textosResultado.push(Niveis[i].text)
+        acertoMinimoResultado.push(Niveis[i].minValue)
+    }
+}
+function renderizarResultado() {
+    const porcentagemAcerto = Number(100*contadorDeAcertos/contadorDeJogadas);
+    const elementoResultado = document.querySelector(".container-resultado")
+    const perguntas = quizSelecionado.questions;
+    let textoDoNivel;
+    let imagemDoNivel;
+    for(let j=0; j < acertoMinimoResultado.length; j++){
+        if (porcentagemAcerto >= acertoMinimoResultado[j]){
+            indiceResultado = j;
+            descriçãoDoNivel = titulosResultado[j]
+            textoDoNivel = textosResultado[j]
+            imagemDoNivel = imagensResultado[j]
+        }
+    }
+    console.log(acertoMinimoResultado)
+    for(let i = 0; i < perguntas.length; i++) {
+        elementoResultado.innerHTML = `
+        <div class="resultado" style="background-color:#EC362D">
+            ${porcentagemAcerto.toFixed(0)}% de acerto: ${descriçãoDoNivel}
+        </div>
+        <article class="resultados">
+            <div class="imagem-resultado">
+                <img src=${imagemDoNivel} alt="">
+            </div>
+            <div class="mensagem-resultado">
+                ${textoDoNivel}
+            </div>
+        </article>
+        `;
+    }
+}
 function irParaPaginaInicial() {
     document.querySelector('.pagina-inicial').classList.remove('oculto');
     document.querySelector('.pagina-Quizz').classList.add('oculto');
     document.querySelector('.pagina-criar-Quizz').classList.add('oculto');
 }
+function resetarQuizz() {
+    adicionarCapaDoQuizz();
+    adicionarPergunta()
+    adicionarButaoVoltar()
+    contadorDeJogadas=0;
+    contadorDeAcertos=0;
+    window.scrollTo(0, 0);
+}
+function criarQuizz() {
+    document.querySelector('.pagina-criar-Quizz').classList.remove('oculto');
+    document.querySelector('.tela-3-1').classList.remove('oculto');
+    document.querySelector('.pagina-inicial').classList.add('oculto');
+}
 
+function criarPerguntas() {
+    const okTitulo = validarTitulo(document.querySelector('.dados-entrada-criar input:nth-of-type(1)').value)
+    const okUrl = validarUrl(document.querySelector('.dados-entrada-criar input:nth-of-type(2)').value)
+    const okQtdNiveis = validarQtdNiveis(document.querySelector('.dados-entrada-criar input:nth-of-type(3)').value)
+    const okQtdPerguntas = validarQtdPerguntas(document.querySelector('.dados-entrada-criar input:nth-of-type(4)').value)
+
+    if(okTitulo && okUrl && okQtdNiveis && okQtdPerguntas) {
+        document.querySelector('.tela-3-1').classList.toggle('oculto');
+        document.querySelector('.tela-3-2').classList.toggle('oculto');
+    } else {
+        alert('preencha corretamente os dados!')
+    }
+}
+function CriarNiveis() {
+
+    const okUrl = validarUrl(document.querySelector('.dados-entrada-criar input:nth-of-type(2)').value)
+}
+function validarTextoPergunta(texto) {
+    if (texto.length >= 20){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+function validarQtdNiveis(quantidade) {
+    let qtd = parseInt(quantidade);
+    if (qtd >= 2) {
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+function validarQtdPerguntas(quantidade) {
+    let qtd = parseInt(quantidade);
+    if (qtd >= 3) {
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+function validarTitulo(titulo) {
+    if (titulo.length > 20 && titulo.length < 65){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+function validarUrl(url) {
+    try {
+        new URL(url);
+    } catch (e) {
+        console.error(e);
+        return false;
+    }
+    return true;
+}
+
+/*
+export const isValidUrl = (url) => {
+    try {
+        new URL(url);
+    } catch (e) {
+        console.error(e);
+        return false;
+    }
+    return true;
+};
+*/
