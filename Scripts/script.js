@@ -55,10 +55,25 @@ function escolherQuizz(selecionado) {
             quizSelecionado = listaDeQuizzes[i];
         }
     }
+    guardarResultados(quizSelecionado.levels);
     paginaDoQuizz()
     adicionarCapaDoQuizz();
     adicionarPergunta()
     adicionarButaoVoltar()
+}
+let descriçãoDoNivel;
+let titulosResultado =[];
+let imagensResultado =[];
+let textosResultado =[];
+let acertoMinimoResultado =[];
+let indiceResultado;
+function guardarResultados(Niveis) {
+    for(let i=0; i<Niveis.length; i++) {
+        titulosResultado.push(Niveis[i].title)
+        imagensResultado.push(Niveis[i].image)
+        textosResultado.push(Niveis[i].text)
+        acertoMinimoResultado.push(Niveis[i].minValue)
+    }
 }
 const paginaInicial = document.querySelector(".pagina-inicial");
 const paginaQuizz = document.querySelector(".pagina-Quizz");
@@ -90,14 +105,14 @@ function adicionarPergunta() {
 }
 
 function renderizarRespostas(perguntas) {
-    let respostas = [];
+    let todasAsRespostas = [];
     for(let i =0; i < perguntas.length; i++) {
-        respostas.push(perguntas[i].answers)
+        todasAsRespostas.push(perguntas[i].answers)
     }
-    respostas.forEach(adicionarResposta)
+    todasAsRespostas.forEach(adicionarResposta)
 }
 function adicionarResposta(elemento, i) {
-    const elementoRespostas = document.querySelector(`.pagina-Quizz article:nth-of-type(${i+1}) .respostas`)
+    const elementoRespostas = document.querySelector(`article:nth-of-type(${i+1}) .respostas`)
     elemento.sort(() => Math.random() - 0.5)
         for(let j = 0; j < elemento.length; j++) {
             elementoRespostas.innerHTML += `
@@ -128,29 +143,30 @@ function selecionarResposta(respostaSelecionada) {
     } 
     respostaSelecionada.classList.add('selecionado');
     respostaSelecionada.removeAttribute("onclick");
-
-    const perguntaRespondida = respostaSelecionada.parentNode;
-    const todasRespostas = perguntaRespondida.children;
-    for(let i = 0; i < todasRespostas.length; i++) {
-        if(!(todasRespostas[i].classList.contains("selecionado"))) {
-            todasRespostas[i].classList.add("opacidade")
-            todasRespostas[i].removeAttribute("onclick");
-        }
-    }
-    verificarRespostaCerta(todasRespostas)
+    destacarImagemSelecionada(respostaSelecionada)
     setTimeout(scrollarProximaPergunta, 2000);
     renderizarResultado();
 }
-
-function verificarRespostaCerta(todasRespostas) {
-    for(let i = 0; i < todasRespostas.length; i++) {
-        if(todasRespostas[i].id==="certa" && todasRespostas[i].classList.contains("selecionado")) {
-            todasRespostas[i].classList.add("correta")
+function destacarImagemSelecionada(respostaSelecionada) {
+    const perguntaRespondida = respostaSelecionada.parentNode;
+    const respostasDaPergunta = perguntaRespondida.children;
+    for(let i = 0; i < respostasDaPergunta.length; i++) {
+        if(!(respostasDaPergunta[i].classList.contains("selecionado"))) {
+            respostasDaPergunta[i].classList.add("opacidade")
+            respostasDaPergunta[i].removeAttribute("onclick");
+        }
+    }
+    verificarRespostaCerta(respostasDaPergunta)
+}
+function verificarRespostaCerta(respostasDaPergunta) {
+    for(let i = 0; i < respostasDaPergunta.length; i++) {
+        if(respostasDaPergunta[i].id==="certa" && respostasDaPergunta[i].classList.contains("selecionado")) {
+            respostasDaPergunta[i].classList.add("correta")
             contadorDeAcertos+=1;
-        } else if(todasRespostas[i].id==="certa") {
-            todasRespostas[i].classList.add("correta")
+        } else if(respostasDaPergunta[i].id==="certa") {
+            respostasDaPergunta[i].classList.add("correta")
         } else {
-            todasRespostas[i].classList.add("errada")
+            respostasDaPergunta[i].classList.add("errada")
         }
     }
 }
@@ -160,54 +176,39 @@ function scrollarProximaPergunta() {
     perguntaNaorespondida.classList.add('respondida');
     perguntaNaorespondida.scrollIntoView();  
 }
-let descriçãoDoNivel;
-let titulosResultado =[];
-let imagensResultado =[];
-let textosResultado =[];
-let acertoMinimoResultado =[];
-let indiceResultado;
-function guardarResultados(Niveis) {
-    for(let i=0; i<Niveis.length; i++) {
-        titulosResultado.push(Niveis[i].title)
-        imagensResultado.push(Niveis[i].image)
-        textosResultado.push(Niveis[i].text)
-        acertoMinimoResultado.push(Niveis[i].minValue)
-    }
-}
 function renderizarResultado() {
     if(contadorDeJogadas===perguntas.length) {
-        guardarResultados(quizSelecionado.levels);
-        paginaQuizz.innerHTML += `
-        <article class="container-resultado"></article>
-        `
-        const porcentagemAcerto = Number(100*contadorDeAcertos/contadorDeJogadas);
+        paginaQuizz.innerHTML += `<article class="container-resultado"></article>`
         const elementoResultado = document.querySelector(".container-resultado")
-        let textoDoNivel;
-        let imagemDoNivel;
-        for(let j=0; j < acertoMinimoResultado.length; j++){
-            if (porcentagemAcerto >= acertoMinimoResultado[j]){
-                indiceResultado = j;
-                descriçãoDoNivel = titulosResultado[j]
-                textoDoNivel = textosResultado[j]
-                imagemDoNivel = imagensResultado[j]
-            }
-        }
-        console.log(acertoMinimoResultado)
-        
-            elementoResultado.innerHTML = `
-            <div class="resultado" style="background-color:#EC362D">
-                ${porcentagemAcerto.toFixed(0)}% de acerto: ${descriçãoDoNivel}
+        elementoResultado.innerHTML = `
+        <div class="resultado" style="background-color:#EC362D">
+            ${resultadoCalculado()[0]}% de acerto: ${resultadoCalculado()[1]}
+        </div>
+        <article class="resultados">
+            <div class="imagem-resultado">
+                <img src=${resultadoCalculado()[2]} alt="">
             </div>
-            <article class="resultados">
-                <div class="imagem-resultado">
-                    <img src=${imagemDoNivel} alt="">
-                </div>
-                <div class="mensagem-resultado">
-                    ${textoDoNivel}
-                </div>
-            </article>
-            `;
+            <div class="mensagem-resultado">
+                ${resultadoCalculado()[3]}
+            </div>
+        </article>
+        `;
     }
+}
+function resultadoCalculado() {
+    const porcentagemAcerto = Number(100*contadorDeAcertos/contadorDeJogadas).toFixed(0);
+    let textoDoNivel;
+    let imagemDoNivel;
+    for(let j=0; j < acertoMinimoResultado.length; j++){
+        if (porcentagemAcerto >= acertoMinimoResultado[j]){
+            indiceResultado = j;
+            descriçãoDoNivel = titulosResultado[j]
+            textoDoNivel = textosResultado[j]
+            imagemDoNivel = imagensResultado[j]
+        }
+    }
+    const calculado = [porcentagemAcerto, descriçãoDoNivel, imagemDoNivel, textoDoNivel]
+    return calculado;
 }
 function irParaPaginaInicial() {
     document.querySelector('.pagina-inicial').classList.remove('oculto');
