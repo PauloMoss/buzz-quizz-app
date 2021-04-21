@@ -101,6 +101,7 @@ h2 {
     left: 10px;
 }
 .Quizz-titulo {
+    position: relative;
     background: rgba(0, 0, 0, 0.60);
     width: 100%;
     height: 227px;
@@ -110,9 +111,12 @@ h2 {
     margin-bottom: 21px;
 }
 .Quizz-titulo img {
-    background-size: cover;
+    z-index: -1;
+    object-fit: cover;
+    position: absolute;
     width: 100%;
     height: 100%;
+    object-position: 100% 20%;
 }
 .Quizz-titulo > div {
     position: absolute;
