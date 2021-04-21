@@ -183,9 +183,10 @@ function scrollarProximaPergunta() {
     if(perguntaNaorespondida!==null) {
         perguntaNaorespondida.scrollIntoView({block: "center", behavior: "smooth"});
     } else {
-        alert("Fazer scrolar para resultado")
-    } 
+        alert("Fazer scrolar para resultado");
+    }
 }
+
 function renderizarResultado() {
     if(contadorDeJogadas===perguntas.length) {
         const elementoResultado = document.querySelector(".container-resultado")
