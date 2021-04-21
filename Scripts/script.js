@@ -175,7 +175,7 @@ function scrollarProximaPergunta() {
     const perguntaNaorespondida = document.querySelector(".naoRespondida");
     perguntaNaorespondida.classList.remove('naoRespondida');
     perguntaNaorespondida.classList.add('respondida');
-    perguntaNaorespondida.scrollIntoView();  
+    perguntaNaorespondida.parentNode.nextSibling.nextSibling.scrollIntoView(false);
 }
 function renderizarResultado() {
     if(contadorDeJogadas===perguntas.length) {
