@@ -129,6 +129,7 @@ function adicionarResposta(elemento, i) {
 }
 function adicionarButaoVoltar() {
     paginaQuizz.innerHTML += `
+        <article class="container-resultado oculto"></article>
         <button class="reinicia-quizz" onclick="resetarQuizz()">Reiniciar Quizz</button>
         <button onclick="irParaPaginaInicial()" class="retorna-inicio">Voltar pra home</button>
     `
@@ -187,8 +188,8 @@ function scrollarProximaPergunta() {
 }
 function renderizarResultado() {
     if(contadorDeJogadas===perguntas.length) {
-        paginaQuizz.innerHTML += `<article class="container-resultado"></article>`
         const elementoResultado = document.querySelector(".container-resultado")
+        elementoResultado.classList.remove('oculto')
         elementoResultado.innerHTML = `
         <div class="resultado" style="background-color:#EC362D">
             ${resultadoCalculado()[0]}% de acerto: ${resultadoCalculado()[1]}
@@ -298,15 +299,6 @@ function validarUrl(url) {
     }
     return true;
 }
-
-/*
-export const isValidUrl = (url) => {
-    try {
-        new URL(url);
-    } catch (e) {
-        console.error(e);
-        return false;
-    }
-    return true;
-};
-*/
+function validarCorHex(corHexadecimal) {
+    return corHexadecimal.match(/^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$/i) !== null;
+}

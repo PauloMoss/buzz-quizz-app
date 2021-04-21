@@ -35,10 +35,10 @@
             <div class="container-comeco">
                 <h1>Comece pelo Começo</h1> 
                 <article class="dados-entrada-criar">
-                    <input type="text" placeholder="Título do seu quizz">
-                    <input class="utl-Img" type="text" placeholder="URL da imagem do seu quizz">
-                    <input type="text" placeholder="Quantidade de perguntas do quizz">
-                    <input type="text" placeholder="Quantidade de níveis do quizz">
+                    <input type="text" placeholder="Título do seu quizz"  title="O título deve possuir entre 20 e 65 caracteres.">
+                    <input class="utl-Img" type="text" placeholder="URL da imagem do seu quizz" title="A imagem deve possuir uma URL válida!">
+                    <input type="text" placeholder="Quantidade de perguntas do quizz"  title="O Quizz deve possuir no mínimo 3 perguntas">
+                    <input type="text" placeholder="Quantidade de níveis do quizz" title="O Quizz deve possuir no mínimo 2 Níveis">
                 </article>
                 <button onclick="criarPerguntas()" >Prosseguir pra criar perguntas</button>
             </div>
@@ -48,56 +48,56 @@
                 <h1>Crie suas perguntas</h1> 
                 <article class="dados-entrada-criar">
                     <div class="pergunta-minimizada oculto"><h2>Pergunta 1</h2><img onclick="alternarPergunta(this)" src="img/create.svg" alt="expandir pergunta"></div>
-                    <div class="pergunta-expandida" onclick="alternarPergunta(this)">
+                    <div class="pergunta-expandida">
                         <h2>Pergunta 1</h2>
                         <input type="text" placeholder="Texto da pergunta">
-                        <input class="corHex" pattern="[A-F0-9]{10} type="text" placeholder="Cor de fundo da pergunta">
+                        <input class="corHex" type="text" placeholder="Cor de fundo da pergunta (Hexadecimal)">
                         <h2>Resposta correta</h2>
                         <input type="text" placeholder="Resposta correta">
-                        <input class="utl-Img" type="text" placeholder="URL da imagem">
+                        <input class="utl-Img" type="text" title="A imagem deve possuir uma URL válida!" placeholder="URL da imagem">
                         <h2>Respostas incorretas</h2>
                         <input type="text" placeholder="Resposta incorreta 1">
-                        <input class="utl-Img" type="text" placeholder="URL da imagem 1">
+                        <input class="utl-Img" type="text" title="A imagem deve possuir uma URL válida!" placeholder="URL da imagem 1">
                         <input type="text" placeholder="Resposta incorreta 2">
-                        <input class="utl-Img" type="text" placeholder="URL da imagem 2">
+                        <input class="utl-Img" type="text" title="A imagem deve possuir uma URL válida!" placeholder="URL da imagem 2">
                         <input type="text" placeholder="Resposta incorreta 3">
-                        <input class="utl-Img" type="text" placeholder="URL da imagem 3">
+                        <input class="utl-Img" type="text" title="A imagem deve possuir uma URL válida!" placeholder="URL da imagem 3">
                     </div>
                 </article>
                 <article class="dados-entrada-criar">
                     <div class="pergunta-minimizada"><h2>Pergunta 2</h2><img onclick="alternarPergunta(this)" src="img/create.svg" alt="expandir pergunta"></div>
-                    <div class="pergunta-expandida oculto" onclick="alternarPergunta(this)">
+                    <div class="pergunta-expandida oculto">
                         <h2>Pergunta 2</h2>
                         <input type="text" placeholder="Texto da pergunta">
-                        <input class="corHex" pattern="[A-F0-9]{10} type="text" placeholder="Cor de fundo da pergunta">
+                        <input class="corHex" type="text" placeholder="Cor de fundo da pergunta (Hexadecimal)">
                         <h2>Resposta correta</h2>
                         <input type="text" placeholder="Resposta correta">
-                        <input class="utl-Img" type="text" placeholder="URL da imagem">
+                        <input class="utl-Img" type="text" title="A imagem deve possuir uma URL válida!" placeholder="URL da imagem">
                         <h2>Respostas incorretas</h2>
                         <input type="text" placeholder="Resposta incorreta 1">
-                        <input class="utl-Img" type="text" placeholder="URL da imagem 1">
+                        <input class="utl-Img" type="text" title="A imagem deve possuir uma URL válida!" placeholder="URL da imagem 1">
                         <input type="text" placeholder="Resposta incorreta 2">
-                        <input class="utl-Img" type="text" placeholder="URL da imagem 2">
+                        <input class="utl-Img" type="text" title="A imagem deve possuir uma URL válida!" placeholder="URL da imagem 2">
                         <input type="text" placeholder="Resposta incorreta 3">
-                        <input class="utl-Img" type="text" placeholder="URL da imagem 3">
+                        <input class="utl-Img" type="text" title="A imagem deve possuir uma URL válida!" placeholder="URL da imagem 3">
                     </div>
                 </article>
                 <article class="dados-entrada-criar">
                     <div class="pergunta-minimizada"><h2>Pergunta 3</h2><img onclick="alternarPergunta(this)" src="img/create.svg" alt="expandir pergunta"></div>
-                    <div class="pergunta-expandida oculto" onclick="alternarPergunta(this)">
+                    <div class="pergunta-expandida oculto">
                         <h2>Pergunta 3</h2>
                         <input type="text" placeholder="Texto da pergunta">
-                        <input class="corHex" pattern="[A-F0-9]{10} type="text" placeholder="Cor de fundo da pergunta">
+                        <input class="corHex" type="text" placeholder="Cor de fundo da pergunta (Hexadecimal)">
                         <h2>Resposta correta</h2>
                         <input type="text" placeholder="Resposta correta">
-                        <input class="utl-Img" type="text" placeholder="URL da imagem">
+                        <input class="utl-Img" type="text" title="A imagem deve possuir uma URL válida!" placeholder="URL da imagem">
                         <h2>Respostas incorretas</h2>
                         <input type="text" placeholder="Resposta incorreta 1">
-                        <input class="utl-Img" type="text" placeholder="URL da imagem 1">
+                        <input class="utl-Img" type="text" title="A imagem deve possuir uma URL válida!" placeholder="URL da imagem 1">
                         <input type="text" placeholder="Resposta incorreta 2">
-                        <input class="utl-Img" type="text" placeholder="URL da imagem 2">
+                        <input class="utl-Img" type="text" title="A imagem deve possuir uma URL válida!" placeholder="URL da imagem 2">
                         <input type="text" placeholder="Resposta incorreta 3">
-                        <input class="utl-Img" type="text" placeholder="URL da imagem 3">
+                        <input class="utl-Img" type="text" title="A imagem deve possuir uma URL válida!" placeholder="URL da imagem 3">
                     </div>
                 </article>
                 <button  onclick="criarNiveis()">Prosseguir pra criar níveis</button>
@@ -108,17 +108,17 @@
                 <h1>Agora, decida os níveis</h1> 
                 <article class="dados-entrada-criar">
                     <div class="pergunta-minimizada oculto"><h2>Nível 1</h2><img onclick="alternarPergunta(this)" src="img/create.svg" alt="expandir pergunta"></div>
-                    <div class="pergunta-expandida" onclick="alternarPergunta(this)">
+                    <div class="pergunta-expandida">
                         <h2>Nível 1</h2>
                         <input type="text" placeholder="Título do nível">
                         <input type="text" placeholder="% de acerto mínima">
-                        <input class="utl-Img" type="text" placeholder="URL da imagem do nível">
+                        <input class="utl-Img" type="text" title="A imagem deve possuir uma URL válida!" placeholder="URL da imagem do nível">
                         <input type="text" placeholder="Descrição do nível">
                     </div>
                 </article>
                 <article class="dados-entrada-criar">
                     <div class="pergunta-minimizada"><h2>Nível 2</h2><img onclick="alternarPergunta(this)" src="img/create.svg" alt="expandir pergunta"></div>
-                    <div class="pergunta-expandida oculto" onclick="alternarPergunta(this)">
+                    <div class="pergunta-expandida oculto">
                         <h2>Nível 2</h2>
                         <input type="text" placeholder="Título do nível">
                         <input type="text" placeholder="% de acerto mínima">
@@ -128,7 +128,7 @@
                 </article>
                 <article class="dados-entrada-criar">
                     <div class="pergunta-minimizada"><h2>Nível 3</h2><img onclick="alternarPergunta(this)" src="img/create.svg" alt="expandir pergunta"></div>
-                    <div class="pergunta-expandida oculto" onclick="alternarPergunta(this)">
+                    <div class="pergunta-expandida oculto">
                         <h2>Nível 3</h2>
                         <input type="text" placeholder="Título do nível">
                         <input type="text" placeholder="% de acerto mínima">
