@@ -186,7 +186,6 @@ function scrollarProximaPergunta() {
         alert("Fazer scrolar para resultado");
     }
 }
-
 function renderizarResultado() {
     if(contadorDeJogadas===perguntas.length) {
         const elementoResultado = document.querySelector(".container-resultado")
