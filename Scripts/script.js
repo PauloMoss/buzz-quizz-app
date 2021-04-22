@@ -12,6 +12,7 @@ function renderizarQuizzesNaTela(resposta) {
     listaDeQuizzes = resposta.data
     verificarSeusQuizzes()
     renderizarTodosQuizzes()
+    window.scrollTo(0, 0);
 }
 const criarQuiz = document.querySelector(".criarQuizz");
 const seusQuizzes = document.querySelector(".seusQuizzes");
@@ -57,25 +58,22 @@ function escolherQuizz(selecionado) {
             quizSelecionado = listaDeQuizzes[i];
         }
     }
+    atualizarContadoresDaPagina()
     guardarResultados(quizSelecionado.levels);
     paginaDoQuizz()
     adicionarCapaDoQuizz();
     adicionarPergunta()
     adicionarButaoVoltar()
 }
-let descriçãoDoNivel;
-let titulosResultado =[];
-let imagensResultado =[];
-let textosResultado =[];
-let acertoMinimoResultado =[];
-let indiceResultado;
 function guardarResultados(Niveis) {
+    const dadosDoResultado = {titulosResultado: [],imagensResultado: [],textosResultado: [],acertoMinimoResultado: []}
     for(let i=0; i<Niveis.length; i++) {
-        titulosResultado.push(Niveis[i].title)
-        imagensResultado.push(Niveis[i].image)
-        textosResultado.push(Niveis[i].text)
-        acertoMinimoResultado.push(Niveis[i].minValue)
+        dadosDoResultado.titulosResultado.push(Niveis[i].title)
+        dadosDoResultado.imagensResultado.push(Niveis[i].image)
+        dadosDoResultado.textosResultado.push(Niveis[i].text)
+        dadosDoResultado.acertoMinimoResultado.push(Niveis[i].minValue)
     }
+    return dadosDoResultado;
 }
 const paginaInicial = document.querySelector(".pagina-inicial");
 const paginaQuizz = document.querySelector(".pagina-Quizz");
@@ -129,12 +127,14 @@ function adicionarResposta(elemento, i) {
             }
         }
 }
+let elementoResultado;
 function adicionarButaoVoltar() {
     paginaQuizz.innerHTML += `
         <article class="container-resultado oculto"></article>
         <button class="reinicia-quizz" onclick="resetarQuizz()">Reiniciar Quizz</button>
         <button onclick="irParaPaginaInicial()" class="retorna-inicio">Voltar pra home</button>
     `
+    elementoResultado = document.querySelector(".container-resultado")
 }
 let contadorDeJogadas=0;
 let contadorDeAcertos=0;
@@ -174,9 +174,9 @@ function verificarRespostaCerta(respostasDaPergunta) {
     }
     atualizarPerguntaRespondida()
 }
-let perguntaNaorespondida = document.querySelector(".naoRespondida");
+let perguntaNaorespondida;
 function atualizarPerguntaRespondida() {
-    let perguntaNaorespondida = document.querySelector(".naoRespondida");
+    perguntaNaorespondida = document.querySelector(".naoRespondida");
     perguntaNaorespondida.classList.remove('naoRespondida');
     perguntaNaorespondida.classList.add('respondida');
 }
@@ -185,12 +185,28 @@ function scrollarProximaPergunta() {
     if(perguntaNaorespondida!==null) {
         perguntaNaorespondida.scrollIntoView({block: "center", behavior: "smooth"});
     } else {
-        document.querySelector('.container-resultado').scrollIntoView({block: "center", behavior: "smooth"});
+        elementoResultado.scrollIntoView({block: "center", behavior: "smooth"});
     }
+}
+function resultadoCalculado() {
+    const porcentagemAcerto = Number(100*contadorDeAcertos/contadorDeJogadas).toFixed(0);
+    const dadosDoResultado = guardarResultados(quizSelecionado.levels);
+    let textoDoNivel;
+    let imagemDoNivel;
+    let descriçãoDoNivel;
+    for(let j=0; j < dadosDoResultado.acertoMinimoResultado.length; j++){
+        if (porcentagemAcerto >= dadosDoResultado.acertoMinimoResultado[j]){
+            const indiceResultado = j;
+            descriçãoDoNivel = dadosDoResultado.titulosResultado[j]
+            textoDoNivel = dadosDoResultado.textosResultado[j]
+            imagemDoNivel = dadosDoResultado.imagensResultado[j]
+        }
+    }
+    const calculado = [porcentagemAcerto, descriçãoDoNivel, imagemDoNivel, textoDoNivel]
+    return calculado;
 }
 function renderizarResultado() {
     if(contadorDeJogadas===perguntas.length) {
-        const elementoResultado = document.querySelector(".container-resultado")
         elementoResultado.classList.remove('oculto')
         elementoResultado.innerHTML = `
         <div class="resultado" style="background-color:#EC362D">
@@ -207,30 +223,19 @@ function renderizarResultado() {
         `;
     }
 }
-function resultadoCalculado() {
-    const porcentagemAcerto = Number(100*contadorDeAcertos/contadorDeJogadas).toFixed(0);
-    let textoDoNivel;
-    let imagemDoNivel;
-    for(let j=0; j < acertoMinimoResultado.length; j++){
-        if (porcentagemAcerto >= acertoMinimoResultado[j]){
-            indiceResultado = j;
-            descriçãoDoNivel = titulosResultado[j]
-            textoDoNivel = textosResultado[j]
-            imagemDoNivel = imagensResultado[j]
-        }
-    }
-    const calculado = [porcentagemAcerto, descriçãoDoNivel, imagemDoNivel, textoDoNivel]
-    return calculado;
-}
 function irParaPaginaInicial() {
     document.querySelector('.pagina-inicial').classList.remove('oculto');
     document.querySelector('.pagina-Quizz').classList.add('oculto');
     document.querySelector('.pagina-criar-Quizz').classList.add('oculto');
+    atualizarContadoresDaPagina()
 }
 function resetarQuizz() {
     adicionarCapaDoQuizz();
     adicionarPergunta()
     adicionarButaoVoltar()
+    atualizarContadoresDaPagina()
+}
+function atualizarContadoresDaPagina() {
     contadorDeJogadas=0;
     contadorDeAcertos=0;
     window.scrollTo(0, 0);
