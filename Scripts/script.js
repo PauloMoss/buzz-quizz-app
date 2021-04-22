@@ -1,8 +1,5 @@
 let listaDeQuizzes = [];
 let listaDeQuizzesDoUsuario;
-let quantidadeDePerguntas;
-let quantidaDeDeNiveis;
-
 obterQuizzes()
 function obterQuizzes() {
     const promessa = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/buzzquizz/quizzes")
@@ -26,8 +23,7 @@ function renderizarTodosQuizzes() {
         <li class="quizz" onclick="escolherQuizz(this)" id="${listaDeQuizzes[i].id}">
             <img src=${listaDeQuizzes[i].image}>
             <div class="nomeDoQuiz">${listaDeQuizzes[i].title}</div>
-        </li>
-        `;
+        </li>`;
     }
 }
 function verificarSeusQuizzes() {
@@ -220,8 +216,7 @@ function renderizarResultado() {
             <div class="mensagem-resultado">
                 ${resultadoCalculado()[3]}
             </div>
-        </article>
-        `;
+        </article>`;
     }
 }
 function irParaPaginaInicial() {
@@ -259,10 +254,9 @@ function renderizarTela_3_1() {
             <h1>Comece pelo Começo</h1> 
             <article class="dados-entrada-criar">
             </article>
-            <button onclick="criarPerguntas()">Prosseguir pra criar perguntas</button>
+            <button onclick="validacaoDeDados()">Prosseguir pra criar perguntas</button>
         </div>
-    </div>
-    `
+    </div>`
 }
 function inputsDaTela_3_1() {
     const placeholderDosInputs = ["Título do seu quizz", "URL da imagem do seu quizz", "Quantidade de perguntas do quizz", "Quantidade de níveis do quizz"];
@@ -290,16 +284,21 @@ function dadosInseridos() {
     armazenarDados_3_1[2] = Number(armazenarDados_3_1[2]);
     armazenarDados_3_1[3] = Number(armazenarDados_3_1[3])
 }
-function validaçãoDeDados() {
+function validacaoDeDados() {
     dadosInseridos()
     const okTitulo = validarTitulo(armazenarDados_3_1[0])
     const okUrl = validarUrl(armazenarDados_3_1[1])
     const okQtdPerguntas = validarQtdPerguntas(armazenarDados_3_1[2])
     const okQtdNiveis = validarQtdNiveis(armazenarDados_3_1[3])
-    return (okTitulo && okUrl && okQtdNiveis && okQtdPerguntas);
+    if (okTitulo && okUrl && okQtdNiveis && okQtdPerguntas) {
+        criarPerguntas()
+    } else {
+        alert('preencha corretamente os dados!')
+    };
 }
+let quantidadeDePerguntas;
+let quantidaDeDeNiveis;
 function criarPerguntas() {
-    validaçãoDeDados()
     paginaCriarQuizz.innerHTML = `
         <div class="tela-3-2">
             <div class="container-comeco">
@@ -312,116 +311,92 @@ function criarPerguntas() {
     const paginaPerguntas = document.querySelector('.tela-3-2 .container-comeco');
     for (let i=1; i < quantidadeDePerguntas+1; i++){
         paginaPerguntas.innerHTML += `
-            <article class="dados-entrada-criar">
-                <div class="pergunta-minimizada" id="${i}">
+            <article class="dados-entrada-criar" id="Pergunta ${i}">
+                <div class="pergunta-minimizada">
                     <h2>Pergunta ${i}</h2>
                     <img onclick="alternarPergunta(this.parentNode)" src="img/create.svg" alt="expandir pergunta">
                 </div>
             </article>
         `;
     }
-    /**if(validaçãoDeDados) {
-        paginaCriarQuizz.innerHTML =`
-        <div class="tela-3-2">
-            <div class="container-comeco">
-                <h1>Crie suas perguntas</h1>
-            </div>
-        </div>`;
-        quantidadeDePerguntas = armazenarDados_3_1[3];
-        quantidaDeDeNiveis = armazenarDados_3_1[4];
-        const paginaPerguntas = document.querySelector('.tela-3-2 .container-comeco');
-        for (let i=1; i < quantidadeDePerguntas+1; i++){
-            paginaPerguntas.innerHTML += `
-                <article class="dados-entrada-criar">
-                    <div class="pergunta-minimizada" onclick="alternarPergunta(this)">
-                        <h2>Pergunta ${i}</h2>
-                        <img onclick="alternarPergunta(this.parentNode)" src="img/create.svg" alt="expandir pergunta">
-                    </div>
-                </article>
-            `;
-        }
-        paginaPerguntas.innerHTML +='<button  onclick="criarNiveis()">Prosseguir pra criar níveis</button>'
-    } 
-    else {
-        alert('preencha corretamente os dados!')
-    }**/
-}
-function alternarPergunta(elementoSelecionado) {
-    const identificadorDaPergunta = elementoSelecionado.id;
-    const selecionado = document.querySelector(".container-comeco .selecionado");
-    if (selecionado !== null) {
-        selecionado.classList.remove("selecionado");
+    paginaPerguntas.innerHTML += `<button  onclick="criarNiveis()">Prosseguir pra criar níveis</button>`
+    if(elementoPerguntaAnterior===undefined) {
+        const iniciarComPrimeiraPerguntaExpandida = document.querySelector(`.container-comeco article:first-of-type`)
+        expandirPergunta(iniciarComPrimeiraPerguntaExpandida, "Pergunta 1")
+        elementoPerguntaAnterior = iniciarComPrimeiraPerguntaExpandida;
+        identificadorPerguntaAnterior = "Pergunta 1";
     }
-    elementoSelecionado.parentNode.classList.add('selecionado');
 }
-function expandirPergunta() {
-    perguntaExpandida.innerHTML = `
-        <div class="pergunta-expandida">
-            <h2>Pergunta 1</h2>
-            <input type="text" placeholder="Texto da pergunta">
-            <input class="corHex" type="text" placeholder="Cor de fundo da pergunta (Hexadecimal)">
-            <h2>Resposta correta</h2>
-            <input type="text" placeholder="Resposta correta">
-            <input class="utl-Img" type="text" title="A imagem deve possuir uma URL válida!" placeholder="URL da imagem">
-            <h2>Respostas incorretas</h2>
-            <input type="text" placeholder="Resposta incorreta 1">
-            <input class="utl-Img" type="text" title="A imagem deve possuir uma URL válida!" placeholder="URL da imagem 1">
-            <input type="text" placeholder="Resposta incorreta 2">
-            <input class="utl-Img" type="text" title="A imagem deve possuir uma URL válida!" placeholder="URL da imagem 2">
-            <input type="text" placeholder="Resposta incorreta 3">
-            <input class="utl-Img" type="text" title="A imagem deve possuir uma URL válida!" placeholder="URL da imagem 3">
-        </div>`
+let elementoPerguntaAnterior;
+let identificadorPerguntaAnterior;
+function alternarPergunta(elementoSelecionado) {
+    if (elementoPerguntaAnterior!==undefined) {
+        minimizarPergunta(elementoPerguntaAnterior, identificadorPerguntaAnterior)
     } 
+    const elementoPerguntaAtual = elementoSelecionado.parentNode;
+    const identificadorDaPergunta = elementoPerguntaAtual.id;
+    expandirPergunta(elementoPerguntaAtual, identificadorDaPergunta);
+    elementoPerguntaAnterior = elementoPerguntaAtual
+    identificadorPerguntaAnterior = identificadorDaPergunta
 }
-function minimizarPergunta() {
-    perguntaExpandida.innerHTML = `
+function expandirPergunta(elementoPergunta, identificadorDaPergunta) {
+        elementoPergunta.innerHTML = `
+        <div class="pergunta-expandida">
+            <h2>${identificadorDaPergunta}</h2>
+        </div>`
+        renderizarInputsDaTela_3_2()
+}
+function minimizarPergunta(elementoPergunta, identificadorDaPergunta) {
+            elementoPergunta.innerHTML = `
             <div class="pergunta-minimizada">
-                <h2>Pergunta 1</h2>
+                <h2>${identificadorDaPergunta}</h2>
                 <img onclick="alternarPergunta(this.parentNode)" src="img/create.svg" alt="expandir pergunta">
-            </div> `;
+            </div>`;
+}
+function renderizarInputsDaTela_3_2() {
+    const caixaDeInputsTela_3_2 = document.querySelector(".pergunta-expandida");
+    caixaDeInputsTela_3_2.innerHTML+= `
+    <input type="text" placeholder="Texto da pergunta">
+    <input class="corHex" type="text" placeholder="Cor de fundo da pergunta (Hexadecimal)">
+    <h2>Resposta correta</h2>
+    <input type="text" placeholder="Resposta correta">
+    <input class="utl-Img" type="text" title="A imagem deve possuir uma URL válida!" placeholder="URL da imagem">
+    <h2>Respostas incorretas</h2>`
+    for(let i = 0; i< 3; i++) {
+        caixaDeInputsTela_3_2.innerHTML+= `
+        <input type="text" placeholder="Resposta incorreta ${i+1}">
+        <input class="utl-Img" type="text" placeholder="URL da imagem ${i+1}"  title="A imagem deve possuir uma URL válida!">`
+    }
 }
 function CriarNiveis() {
 
     const okUrl = validarUrl(document.querySelector('.dados-entrada-criar input:nth-of-type(2)').value)
 }
-/**function alternarPergunta(elemento) {
-    const elementoVisivel = document.querySelector('.pergunta-expandida:not(.oculto)');
-    elemento.parentNode.classList.add('oculto');
-    if (elementoVisivel !== null) {
-        elementoVisivel.classList.add('oculto');
-        elementoVisivel.previousSibling.previousSibling.classList.remove('oculto');
-        elemento.parentNode.nextSibling.nextSibling.classList.remove('oculto');
-    }
-}**/
 function validarTextoRespostas(texto) {
     if (texto.length > 0){
         return true;
-    }
-    else{
+    } else{
         return false;
     }
 }
 function validarTituloNivel(texto) {
     if (texto.length >= 10){
         return true;
-    }
-    else{
+    } else{
         return false;
     }
 }
 function validarTextoNivel(texto) {
     if (texto.length >= 30){
         return true;
-    }
-    else{
+    } else{
         return false;
     }
 }
 function validarTextoPergunta(texto) {
     if (texto.length >= 20){
         return true;
-    }
-    else{
+    } else{
         return false;
     }
 }
@@ -429,8 +404,7 @@ function validarQtdNiveis(quantidade) {
     let qtd = parseInt(quantidade);
     if (qtd >= 2) {
         return true;
-    }
-    else{
+    } else{
         return false;
     }
 }
@@ -438,16 +412,14 @@ function validarQtdPerguntas(quantidade) {
     let qtd = parseInt(quantidade);
     if (qtd >= 3) {
         return true;
-    }
-    else{
+    } else{
         return false;
     }
 }
 function validarTitulo(titulo) {
     if (titulo.length > 20 && titulo.length < 65){
         return true;
-    }
-    else{
+    } else{
         return false;
     }
 }
@@ -457,8 +429,7 @@ function validarUrl(url) {
     } catch (e) {
         console.error(e);
         return false;
-    }
-    return true;
+    } return true;
 }
 function validarCorHex(corHexadecimal) {
     return corHexadecimal.match(/^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$/i) !== null;
