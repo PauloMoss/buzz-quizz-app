@@ -277,7 +277,7 @@ function renderizarInputsDaTela_3_1() {
     inputDaURL.setAttribute("class", "utl-Img")
 }
 const armazenarDados_3_1 = [];
-function dadosInseridos() {
+function dadosInseridos_3_1() {
     for(let i = 0; i < inputsDaTela_3_1().length; i++) {
         armazenarDados_3_1[i] = (document.querySelector(`.dados-entrada-criar input:nth-of-type(${i+1})`).value);
     }
@@ -285,7 +285,7 @@ function dadosInseridos() {
     armazenarDados_3_1[3] = Number(armazenarDados_3_1[3])
 }
 function validacaoDeDados() {
-    dadosInseridos()
+    dadosInseridos_3_1()
     const okTitulo = validarTitulo(armazenarDados_3_1[0])
     const okUrl = validarUrl(armazenarDados_3_1[1])
     const okQtdPerguntas = validarQtdPerguntas(armazenarDados_3_1[2])
@@ -319,7 +319,7 @@ function criarPerguntas() {
             </article>
         `;
     }
-    paginaPerguntas.innerHTML += `<button  onclick="criarNiveis()">Prosseguir pra criar níveis</button>`
+    paginaPerguntas.innerHTML += `<button  onclick="CriarNiveis()">Prosseguir pra criar níveis</button>`
     if(elementoPerguntaAnterior===undefined) {
         const iniciarComPrimeiraPerguntaExpandida = document.querySelector(`.container-comeco article:first-of-type`)
         expandirPergunta(iniciarComPrimeiraPerguntaExpandida, "Pergunta 1")
@@ -330,6 +330,7 @@ function criarPerguntas() {
 let elementoPerguntaAnterior;
 let identificadorPerguntaAnterior;
 function alternarPergunta(elementoSelecionado) {
+    dadosInseridos_3_2()
     if (elementoPerguntaAnterior!==undefined) {
         minimizarPergunta(elementoPerguntaAnterior, identificadorPerguntaAnterior)
     } 
@@ -368,9 +369,19 @@ function renderizarInputsDaTela_3_2() {
         <input class="utl-Img" type="text" placeholder="URL da imagem ${i+1}"  title="A imagem deve possuir uma URL válida!">`
     }
 }
+let armazenarDados_3_2 = [];
+function dadosInseridos_3_2() {
+    const qntDeInputsNoFormulario_3_2 = 10;
+    const dados_3_2 = []
+    for(let i = 0; i < qntDeInputsNoFormulario_3_2; i++) {
+        dados_3_2[i] = (document.querySelector(`.pergunta-expandida input:nth-of-type(${i+1})`).value);
+    }
+    const dadosDoFormulario_3_2 = {textoDaPergunta: `${dados_3_2[0]}`, CorDeFundo: `${dados_3_2[1]}`, RespostaCerta: `${dados_3_2[2]}`, URLdaImagemCerta: `${dados_3_2[3]}`, RespostaErrada1: `${dados_3_2[4]}`, URLdaImagemErrada1: `${dados_3_2[5]}`, RespostaErrada2: `${dados_3_2[6]}`, URLdaImagemErrada2: `${dados_3_2[7]}`, RespostaErrada3: `${dados_3_2[8]}`, URLdaImagemErrada3: `${dados_3_2[9]}`}
+    armazenarDados_3_2.push(dadosDoFormulario_3_2)
+}
 function CriarNiveis() {
-
-    const okUrl = validarUrl(document.querySelector('.dados-entrada-criar input:nth-of-type(2)').value)
+    dadosInseridos_3_2()
+    //const okUrl = validarUrl(document.querySelector('.dados-entrada-criar input:nth-of-type(2)').value)
 }
 function validarTextoRespostas(texto) {
     if (texto.length > 0){
