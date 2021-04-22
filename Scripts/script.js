@@ -1,5 +1,7 @@
 let listaDeQuizzes = [];
 let listaDeQuizzesDoUsuario;
+let quantidadeDePerguntas;
+let quantidaDeDeNiveis;
 
 obterQuizzes()
 function obterQuizzes() {
@@ -183,7 +185,7 @@ function scrollarProximaPergunta() {
     if(perguntaNaorespondida!==null) {
         perguntaNaorespondida.scrollIntoView({block: "center", behavior: "smooth"});
     } else {
-        alert("Fazer scrolar para resultado");
+        document.querySelector('.container-resultado').scrollIntoView({block: "center", behavior: "smooth"});
     }
 }
 function renderizarResultado() {
@@ -242,12 +244,71 @@ function criarQuizz() {
 function criarPerguntas() {
     const okTitulo = validarTitulo(document.querySelector('.dados-entrada-criar input:nth-of-type(1)').value)
     const okUrl = validarUrl(document.querySelector('.dados-entrada-criar input:nth-of-type(2)').value)
-    const okQtdNiveis = validarQtdNiveis(document.querySelector('.dados-entrada-criar input:nth-of-type(3)').value)
-    const okQtdPerguntas = validarQtdPerguntas(document.querySelector('.dados-entrada-criar input:nth-of-type(4)').value)
-
+    const okQtdPerguntas = validarQtdPerguntas(document.querySelector('.dados-entrada-criar input:nth-of-type(3)').value)
+    const okQtdNiveis = validarQtdNiveis(document.querySelector('.dados-entrada-criar input:nth-of-type(4)').value)
     if(okTitulo && okUrl && okQtdNiveis && okQtdPerguntas) {
         document.querySelector('.tela-3-1').classList.toggle('oculto');
         document.querySelector('.tela-3-2').classList.toggle('oculto');
+        quantidadeDePerguntas = document.querySelector('.dados-entrada-criar input:nth-of-type(3)').value;
+        quantidaDeDeNiveis = document.querySelector('.dados-entrada-criar input:nth-of-type(4)').value;
+        const pagina = document.querySelector('.pagina-criar-Quizz');
+        pagina.innerHTML =`
+            <div class="tela-3-2">
+                <div class="container-comeco">
+                    <h1>Crie suas perguntas</h1>
+                </div>
+            </div>
+        `;
+        const paginaPerguntas = document.querySelector('.tela-3-2 .container-comeco');
+        paginaPerguntas.innerHTML += `
+            <article class="dados-entrada-criar">
+                <div class="pergunta-minimizada oculto">
+                    <h2>Pergunta ${1}</h2>
+                    <img onclick="alternarPergunta(this)" src="img/create.svg" alt="expandir pergunta">
+                </div>
+                <div class="pergunta-expandida">
+                    <h2>Pergunta ${1}</h2>
+                    <input type="text" placeholder="Texto da pergunta">
+                    <input class="corHex" type="text" placeholder="Cor de fundo da pergunta (Hexadecimal)">
+                    <h2>Resposta correta</h2>
+                    <input type="text" placeholder="Resposta correta">
+                    <input class="utl-Img" type="text" title="A imagem deve possuir uma URL válida!" placeholder="URL da imagem">
+                    <h2>Respostas incorretas</h2>
+                    <input type="text" placeholder="Resposta incorreta 1">
+                    <input class="utl-Img" type="text" title="A imagem deve possuir uma URL válida!" placeholder="URL da imagem 1">
+                    <input type="text" placeholder="Resposta incorreta 2">
+                    <input class="utl-Img" type="text" title="A imagem deve possuir uma URL válida!" placeholder="URL da imagem 2">
+                    <input type="text" placeholder="Resposta incorreta 3">
+                    <input class="utl-Img" type="text" title="A imagem deve possuir uma URL válida!" placeholder="URL da imagem 3">
+                </div>
+            </article>
+        `;
+        for (let i=1; i < quantidadeDePerguntas; i++){
+            paginaPerguntas.innerHTML += `
+                <article class="dados-entrada-criar">
+                    <div class="pergunta-minimizada">
+                        <h2>Pergunta ${i+1}</h2>
+                        <img onclick="alternarPergunta(this)" src="img/create.svg" alt="expandir pergunta">
+                    </div>
+                    <div class="pergunta-expandida oculto">
+                        <h2>Pergunta ${i+1}</h2>
+                        <input type="text" placeholder="Texto da pergunta">
+                        <input class="corHex" type="text" placeholder="Cor de fundo da pergunta (Hexadecimal)">
+                        <h2>Resposta correta</h2>
+                        <input type="text" placeholder="Resposta correta">
+                        <input class="utl-Img" type="text" title="A imagem deve possuir uma URL válida!" placeholder="URL da imagem">
+                        <h2>Respostas incorretas</h2>
+                        <input type="text" placeholder="Resposta incorreta 1">
+                        <input class="utl-Img" type="text" title="A imagem deve possuir uma URL válida!" placeholder="URL da imagem 1">
+                        <input type="text" placeholder="Resposta incorreta 2">
+                        <input class="utl-Img" type="text" title="A imagem deve possuir uma URL válida!" placeholder="URL da imagem 2">
+                        <input type="text" placeholder="Resposta incorreta 3">
+                        <input class="utl-Img" type="text" title="A imagem deve possuir uma URL válida!" placeholder="URL da imagem 3">
+                    </div>
+                </article>
+            `;
+        }
+        paginaPerguntas.innerHTML +='<button  onclick="criarNiveis()">Prosseguir pra criar níveis</button>'
     } else {
         alert('preencha corretamente os dados!')
     }
@@ -255,6 +316,39 @@ function criarPerguntas() {
 function CriarNiveis() {
 
     const okUrl = validarUrl(document.querySelector('.dados-entrada-criar input:nth-of-type(2)').value)
+}
+function alternarPergunta(elemento) {
+    const elementoVisivel = document.querySelector('.pergunta-expandida:not(.oculto)');
+    elemento.parentNode.classList.add('oculto');
+    if (elementoVisivel !== null) {
+        elementoVisivel.classList.add('oculto');
+        elementoVisivel.previousSibling.previousSibling.classList.remove('oculto');
+        elemento.parentNode.nextSibling.nextSibling.classList.remove('oculto');
+    }
+}
+function validarTextoRespostas(texto) {
+    if (texto.length > 0){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+function validarTituloNivel(texto) {
+    if (texto.length >= 10){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+function validarTextoNivel(texto) {
+    if (texto.length >= 30){
+        return true;
+    }
+    else{
+        return false;
+    }
 }
 function validarTextoPergunta(texto) {
     if (texto.length >= 20){
