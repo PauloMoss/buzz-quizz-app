@@ -39,6 +39,15 @@ h2 {
     border-radius: 5px;
     color: #B9B9B9;
 }
+.criarQuizz.container>div:first-of-type{
+    margin-bottom: 26px;
+    font-family: Roboto;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 23px;
+    letter-spacing: 0em;
+    text-align: center;
+}
 .botaoCriarQuizz {
     display: flex;
     justify-content: center;
@@ -62,6 +71,9 @@ h2 {
 }
 .todosQuizzesTitulo {
     margin-top: 77px;
+}
+.todosQuizzesTitulo.container>h2:first-of-type {
+    margin-bottom: 14px;
 }
 .todosQuizzes {
     flex-wrap: wrap;
@@ -88,8 +100,7 @@ h2 {
 .pagina-Quizz {
     position: relative;
     top:69px;
-    right: 0;
-    left: 0;
+    margin: 0 auto;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -195,7 +206,6 @@ article.container-resultado{
 }
 .resultado img {
     object-fit: cover;
-
 }
 .imagem-resultado img{
     width: 364px;
@@ -359,4 +369,165 @@ article.container-resultado{
 }
 .utl-Img{
     text-transform: initial;
+}
+@media (max-width: 1100px) {
+    .pagina-inicial{
+        padding: 0 18px;
+        width: 100%;
+    }
+    .pagina-Quizz {
+        margin: 0;
+        width: 100%;
+    }
+    .pagina-criar-Quizz {
+        margin:0;
+        width: 100%;
+    }
+    .criarQuizz {
+        margin-top: 100px;
+    }
+    .container {
+        width: 100%;
+    }
+    .todosQuizzes {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+    }
+    .quizz {
+        width: 100%;
+        height: none;
+        margin-right: 0;
+        margin-bottom: 14px;
+    }
+    .quizz img {
+        width: 100%;
+        height: none;
+        margin:none;
+    }
+    .container img {
+        width: 100%;
+        height: none;
+    }
+    .nomeDoQuiz {
+        font-size: 19px;
+        word-break: break-all;
+        overflow: hidden;
+    }
+    .seusQuizzesTitulo {
+        margin-top: 105px;
+    }
+    .seusQuizzesTitulo>h2{
+        width: 100%;
+    }
+    .seusQuizzesTitulo ion-icon {
+        width: 31px;
+    }
+    article.dados-entrada-criar{
+        width: 100%;
+    }
+    .dados-entrada-criar input{
+        width: 100%;
+        padding: 0;
+    }
+    .container-comeco button {
+        margin-top: 29px;
+        width: 324px;
+        font-size: 18px;
+    }
+    .pergunta-minimizada {
+        width: 100%;
+    }
+    .tela-3-4 .container-comeco.fim>div {
+        width: 100%;
+    }
+    .tela-3-1 .container-comeco {
+        margin-top: 108px;
+    }
+    .tela-3-2 .container-comeco {
+        margin-top: 108px;
+    }
+    .tela-3-3 .container-comeco {
+        margin-top: 108px;
+    }
+    .tela-3-4 .container-comeco {
+        margin-top: 108px;
+    }
+    .tela-3-4 .quizz.fim {
+        width: 340px;
+        height: 181px;
+    }
+    .tela-3-4 .reinicia-quizz.fim {
+        margin: 10px auto;
+    }
+    .Quizz-titulo > div{
+        word-break: break-all;
+        line-break: strict;
+        font-size: 19px;
+        line-height: 22px;
+    }
+    .container-pergunta .pergunta {
+        padding: 20px 16px 15px;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    article.container-pergunta {
+        margin: 0px auto 28px;
+        width: 100%;
+        padding: 18px 17px 23px;
+        font-size: 19px;
+        line-height: 22px;
+        word-break: break-all;
+    }
+    .respostas {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        width: 100%;
+    }
+    .resposta p {
+        font-size: 13px;
+        line-height: 16px;
+        word-break: break-all;
+        width: 100%;
+    }
+    .resposta>img {
+        width: 100%;
+    }
+    .respostas>div {
+        width: 49%;
+        margin: 0;
+    }
+    article.container-resultado {
+        width: 100%;
+        padding: 18px 17px 18px 14px;
+    }
+    .resultados {
+        flex-direction: column;
+        justify-content: center;
+    }
+    .imagem-resultado img {
+        width: 100%;
+        margin-bottom: 9px;
+    }
+    .mensagem-resultado {
+        width: 100%;
+        font-size: 17px;
+        line-height: 19px;
+        margin-left: 0;
+    }
+    .reinicia-quizz {
+        color: #FFF5F4;
+        background: #EC362D;
+        margin: 34px auto 8px auto;
+    }
+    .pagina-Quizz button {
+        height: 44px;
+        width: 220px;
+        font-size: 18px;
+        line-height: 21px;
+    }
+    .container-resultado .resultado {
+        word-break: break-all;
+    }
 }
