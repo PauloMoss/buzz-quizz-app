@@ -273,7 +273,8 @@ function renderizarInputsDaTela_3_1() {
     const caixaDeInputsTela_3_1 = document.querySelector(".dados-entrada-criar");
     for(let i = 0; i< inputsDaTela_3_1().length; i++) {
         caixaDeInputsTela_3_1.innerHTML+= `
-        <input type="text" placeholder=${inputsDaTela_3_1()[i].placeholder}  title=${inputsDaTela_3_1()[i].title} value=${dados_3_1[i]}>`
+        <input type="text" placeholder=${inputsDaTela_3_1()[i].placeholder}  title=${inputsDaTela_3_1()[i].title} value=${dados_3_1[i]}>
+        <div class="validacaoDeDados">${listaDeValidacao_3_1[i]}</div>`
     }
     const inputDaURL = document.querySelector(".dados-entrada-criar input:nth-of-type(2)");
     inputDaURL.setAttribute("class", "utl-Img")
@@ -290,20 +291,36 @@ function dadosInseridos_3_1() {
 }
 let quantidadeDePerguntas;
 let quantidaDeDeNiveis;
+let listaDeValidacao_3_1=["","","",""];
 function validacaoDeDados() {
     dadosInseridos_3_1()
-    const okTitulo = validarTitulo(armazenarDados_3_1.title)
-    const okUrl = validarUrl(armazenarDados_3_1.image)
-    const okQtdPerguntas = validarQtdPerguntas(armazenarDados_3_1.numerQuestions)
-    const okQtdNiveis = validarQtdNiveis(armazenarDados_3_1.numberLevels)
-    if (okTitulo && okUrl && okQtdNiveis && okQtdPerguntas) {
+    let variavelDeVerificação = true;
+    if(!validarTitulo(armazenarDados_3_1.title)) {
+        listaDeValidacao_3_1[0] = "O Título deve ter no mínimo 20 e no máximo 65 caracteres";
+        variavelDeVerificação = false;
+    }
+    if(!validarUrl(armazenarDados_3_1.image)) {
+        listaDeValidacao_3_1[1] = "O valor informado não é uma URL válida";
+        variavelDeVerificação = false;
+    }
+    if(!validarQtdPerguntas(armazenarDados_3_1.numerQuestions)) {
+        listaDeValidacao_3_1[2] = "O quizz deve ter no mínimo 3 perguntas";
+        variavelDeVerificação = false;
+    }
+    if(!validarQtdNiveis(armazenarDados_3_1.numberLevels)) {
+        listaDeValidacao_3_1[3] = "O quizz deve ter no mínimo 2 niveis";
+        variavelDeVerificação = false;
+    }
+    if (variavelDeVerificação) {
         quantidadeDePerguntas = armazenarDados_3_1.numerQuestions;
         quantidaDeDeNiveis = armazenarDados_3_1.numberLevels;
         criarPerguntas()
         objNovoQuizz.title = (armazenarDados_3_1.title)
         objNovoQuizz.image = (armazenarDados_3_1.image)
     } else {
-        alert('preencha novamente os dados!')
+        renderizarTela_3_1();
+        renderizarInputsDaTela_3_1();
+        listaDeValidacao_3_1=["","","",""]
     };
 }
 function criarPerguntas() {
@@ -653,7 +670,7 @@ function finalizarQuizz() {
 let listaDeQuizzesDoUsuario =[];
 let idQuizzEnviado;
 function QuizzEnviado(resposta) {
-    idQuizzEnviado = resposta.data.id;
+    idQuizzEnviado = (resposta.data.id);
     listaDeQuizzesDoUsuario.push(resposta.data);
     const listaSeriada = JSON.stringify(listaDeQuizzesDoUsuario);
     localStorage.setItem("SeusQuizzes", listaSeriada);
