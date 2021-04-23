@@ -276,6 +276,7 @@ function renderizarInputsDaTela_3_1() {
     const inputDaURL = document.querySelector(".dados-entrada-criar input:nth-of-type(2)");
     inputDaURL.setAttribute("class", "utl-Img")
 }
+let objNovoQuizz = {}
 const armazenarDados_3_1 = [];
 function dadosInseridos_3_1() {
     for(let i = 0; i < inputsDaTela_3_1().length; i++) {
@@ -292,6 +293,8 @@ function validacaoDeDados() {
     const okQtdNiveis = validarQtdNiveis(armazenarDados_3_1[3])
     if (okTitulo && okUrl && okQtdNiveis && okQtdPerguntas) {
         criarPerguntas()
+        objNovoQuizz.title.push(armazenarDados_3_1[0])
+        objNovoQuizz.image.push(armazenarDados_3_1[1])
     } else {
         alert('preencha corretamente os dados!')
     };
@@ -381,7 +384,73 @@ function dadosInseridos_3_2() {
 }
 function CriarNiveis() {
     dadosInseridos_3_2()
-    //const okUrl = validarUrl(document.querySelector('.dados-entrada-criar input:nth-of-type(2)').value)
+    for (let i=0; i<armazenarDados_3_2.textoDaPergunta.length; i++){
+        let criterio = validarTextoPergunta(armazenarDados_3_2[i].textoDaPergunta)
+        if (criterio === false){
+            return alert('Preencha a pagina corretamente!')
+        }
+    }
+    for (let i=0; i<armazenarDados_3_2.CorDeFundo.length; i++){
+        let criterio = validarCorHex(armazenarDados_3_2[i].CorDeFundo)
+        if (criterio === false){
+            return alert('Preencha a pagina corretamente!')
+        }
+    }
+    for (let i=0; i<armazenarDados_3_2.RespostaCerta.length; i++){
+        let criterioTexto = validarTextoRespostas(armazenarDados_3_2[i].RespostaCerta)
+        let criterioUrl = validarTextoRespostas(armazenarDados_3_2[i].URLdaImagemCerta)
+        if (criterioTexto === false || criterioUrl === false){
+            return alert('Preencha a pagina corretamente!')
+        }
+    }
+    for (let i=0; i<armazenarDados_3_2.RespostaErrada1.length; i++){
+        let criterioTexto = validarTextoRespostas(armazenarDados_3_2[i].RespostaErrada1)
+        let criterioUrl = validarTextoRespostas(armazenarDados_3_2[i].URLdaImagemErrada1)
+        if (criterioTexto === false || criterioUrl === false){
+            return alert('Preencha a pagina corretamente!')
+        }
+        } else if (armazenarDados_3_2[i].RespostaErrada2 !== ""){
+            criterioTexto = validarTextoRespostas(armazenarDados_3_2[i].RespostaErrada2)
+            criterioUrl = validarTextoRespostas(armazenarDados_3_2[i].URLdaImagemErrada2)
+            if (criterioTexto === false || criterioUrl === false){
+                return alert('Preencha a pagina corretamente!')
+            }
+        } else if (armazenarDados_3_2[i].RespostaErrada3 !== ""){
+            criterioTexto = validarTextoRespostas(armazenarDados_3_2[i].RespostaErrada2)
+            criterioUrl = validarTextoRespostas(armazenarDados_3_2[i].URLdaImagemErrada2)
+            if (criterioTexto === false || criterioUrl === false){
+                return alert('Preencha a pagina corretamente!')
+            }
+        }
+    }
+    armazenarDados_3_2.forEach((item)=>{
+        const title = item.textoDaPergunta;
+        const color = item.CorDeFundo;
+        const answers = [];
+        answers.push({
+            text: item.RespostaCerta;
+            image: item.URLdaImagemCerta;
+            isCorrectAnswer: true;
+        });
+        answers.push({
+            text: item.RespostaErrada1;
+            image: item.URLdaRespostaErrada1;
+            isCorrectAnswer: false;
+        });
+        answers.push({
+            text: item.RespostaErrada2;
+            image: item.URLdaRespostaErrada2;
+            isCorrectAnswer: false;
+        });
+        answers.push({
+            text: item.RespostaErrada3;
+            image: item.URLdaRespostaErrada3;
+            isCorrectAnswer: false;
+        });
+        const pergunta = {title, color, answers};
+        objNovoQuizz.questions.push(pergunta);
+    });
+
 }
 function validarTextoRespostas(texto) {
     if (texto.length > 0){
