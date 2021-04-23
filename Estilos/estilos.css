@@ -442,9 +442,6 @@ article.container-resultado{
     .pergunta-minimizada {
         width: 100%;
     }
-    .tela-3-4 .container-comeco.fim>div {
-        width: 100%;
-    }
     .tela-3-1 .container-comeco {
         margin-top: 108px;
     }
@@ -458,8 +455,7 @@ article.container-resultado{
         margin-top: 108px;
     }
     .tela-3-4 .quizz.fim {
-        width: 340px;
-        height: 181px;
+        width: 95%;
     }
     .tela-3-4 .reinicia-quizz.fim {
         margin: 10px auto;
