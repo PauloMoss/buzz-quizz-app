@@ -271,7 +271,7 @@ function renderizarInputsDaTela_3_1() {
     const caixaDeInputsTela_3_1 = document.querySelector(".dados-entrada-criar");
     for(let i = 0; i< inputsDaTela_3_1().length; i++) {
         caixaDeInputsTela_3_1.innerHTML+= `
-        <input type="text" placeholder=${inputsDaTela_3_1()[i].placeholder}  title=${inputsDaTela_3_1()[i].title}>`
+        <input type="text" placeholder=${inputsDaTela_3_1()[i].placeholder}  title=${inputsDaTela_3_1()[i].title} value=${dados_3_1[i]}>`
     }
     const inputDaURL = document.querySelector(".dados-entrada-criar input:nth-of-type(2)");
     inputDaURL.setAttribute("class", "utl-Img")
@@ -279,13 +279,12 @@ function renderizarInputsDaTela_3_1() {
 //Começa aqui 
 let objNovoQuizz = {}
 let armazenarDados_3_1;
+let dados_3_1 = ["", "", "", ""]
 function dadosInseridos_3_1() {
-    let dados_3_1 = []
     for(let i = 0; i < inputsDaTela_3_1().length; i++) {
         dados_3_1[i] = (document.querySelector(`.dados-entrada-criar input:nth-of-type(${i+1})`).value);
     }
-    const dadosDoFormulario_3_1 = {title: `${dados_3_1[0]}`, image: `${dados_3_1[1]}`, numerQuestions: Number(`${dados_3_1[2]}`), numberLevels: Number(`${dados_3_1[3]}`)}
-    armazenarDados_3_1 = dadosDoFormulario_3_1;
+    armazenarDados_3_1 = {title: `${dados_3_1[0]}`, image: `${dados_3_1[1]}`, numerQuestions: Number(`${dados_3_1[2]}`), numberLevels: Number(`${dados_3_1[3]}`)}
 }
 function validacaoDeDados() {
     dadosInseridos_3_1()
@@ -324,7 +323,7 @@ function criarPerguntas() {
             </article>
         `;
     }
-    paginaPerguntas.innerHTML += `<button  onclick="CriarNiveis()">Prosseguir pra criar níveis</button>`
+    paginaPerguntas.innerHTML += `<button  onclick="validarDadosFormulario_3_2()">Prosseguir pra criar níveis</button>`
     if(elementoPerguntaAnterior===undefined) {
         const iniciarComPrimeiraPerguntaExpandida = document.querySelector(`.container-comeco article:first-of-type`)
         elementoPerguntaAnterior = iniciarComPrimeiraPerguntaExpandida;
@@ -335,7 +334,7 @@ function criarPerguntas() {
 let elementoPerguntaAnterior;
 let identificadorPerguntaAnterior;
 function alternarPergunta(elementoSelecionado) {
-    dadosInseridos_3_2(identificadorPerguntaAnterior)
+    dadosInseridos_3_2(identificadorPerguntaAnterior);
     if (elementoPerguntaAnterior!==undefined) {
         minimizarPergunta(elementoPerguntaAnterior, identificadorPerguntaAnterior)
     } 
@@ -350,7 +349,7 @@ function expandirPergunta(elementoPergunta, identificadorDaPergunta) {
         <div class="pergunta-expandida">
             <h2>Pergunta ${identificadorDaPergunta}</h2>
         </div>`
-        renderizarInputsDaTela_3_2()
+        renderizarInputsDaTela_3_2(identificadorDaPergunta)
 }
 function minimizarPergunta(elementoPergunta, identificadorDaPergunta) {
             elementoPergunta.innerHTML = `
@@ -359,36 +358,39 @@ function minimizarPergunta(elementoPergunta, identificadorDaPergunta) {
                 <img onclick="alternarPergunta(this.parentNode)" src="img/create.svg" alt="expandir pergunta">
             </div>`;
 }
-function renderizarInputsDaTela_3_2() {
+
+let formulario_3_2 = []
+formulario_3_2[0] = ["","","","","","","","","","",];
+function renderizarInputsDaTela_3_2(identificadorDaPergunta) {
     const caixaDeInputsTela_3_2 = document.querySelector(".pergunta-expandida");
+    const placeholderDosInputs = ["Resposta incorreta 1", "URL da imagem 1", "Resposta incorreta 2", "URL da imagem 2", "Resposta incorreta 3", "URL da imagem 3"];
     caixaDeInputsTela_3_2.innerHTML+= `
-    <input type="text" placeholder="Texto da pergunta">
-    <input class="corHex" type="text" placeholder="Cor de fundo da pergunta (Hexadecimal)">
+    <input type="text" placeholder="Texto da pergunta" value=${formulario_3_2[identificadorDaPergunta-1][0]}>
+    <input class="corHex" type="text" placeholder="Cor de fundo da pergunta (Hexadecimal)" value=${formulario_3_2[identificadorDaPergunta-1][1]}>
     <h2>Resposta correta</h2>
-    <input type="text" placeholder="Resposta correta">
-    <input class="utl-Img" type="text" title="A imagem deve possuir uma URL válida!" placeholder="URL da imagem">
+    <input type="text" placeholder="Resposta correta" value=${formulario_3_2[identificadorDaPergunta-1][2]}>
+    <input class="utl-Img" type="text" title="A imagem deve possuir uma URL válida!" placeholder="URL da imagem" value=${formulario_3_2[identificadorDaPergunta-1][3]}>
     <h2>Respostas incorretas</h2>`
-    for(let i = 0; i< 3; i++) {
+    for(let i = 0; i< 5; i+=2) {
         caixaDeInputsTela_3_2.innerHTML+= `
-        <input type="text" placeholder="Resposta incorreta ${i+1}">
-        <input class="utl-Img" type="text" placeholder="URL da imagem ${i+1}"  title="A imagem deve possuir uma URL válida!">`
+        <input type="text" placeholder="${placeholderDosInputs[i]}" value=${formulario_3_2[identificadorDaPergunta-1][4+i]}>
+        <input class="utl-Img" type="text" placeholder="${placeholderDosInputs[i+1]}"  title="A imagem deve possuir uma URL válida!" value=${formulario_3_2[identificadorDaPergunta-1][5+i]}>`
     }
 }
+let dados_3_2 = []
 let armazenarDados_3_2 = [];
 function dadosInseridos_3_2(identificadorPerguntaAnterior) {
     const qntDeInputsNoFormulario_3_2 = 10;
-    const dados_3_2 = []
     for(let i = 0; i < qntDeInputsNoFormulario_3_2; i++) {
-        dados_3_2[i] = (document.querySelector(`.pergunta-expandida input:nth-of-type(${i+1})`).value);
+        formulario_3_2[identificadorPerguntaAnterior-1][i] = (document.querySelector(`.pergunta-expandida input:nth-of-type(${i+1})`).value);
+    }
+    if(formulario_3_2[identificadorPerguntaAnterior]===undefined){
+        formulario_3_2[identificadorPerguntaAnterior] = ["","","","","","","","","","",]
     }
     const dadosDoFormulario_3_2 = {textoDaPergunta: `${dados_3_2[0]}`, CorDeFundo: `${dados_3_2[1]}`, RespostaCerta: `${dados_3_2[2]}`, URLdaImagemCerta: `${dados_3_2[3]}`, RespostaErrada1: `${dados_3_2[4]}`, URLdaImagemErrada1: `${dados_3_2[5]}`, RespostaErrada2: `${dados_3_2[6]}`, URLdaImagemErrada2: `${dados_3_2[7]}`, RespostaErrada3: `${dados_3_2[8]}`, URLdaImagemErrada3: `${dados_3_2[9]}`}
     armazenarDados_3_2[identificadorPerguntaAnterior - 1] = dadosDoFormulario_3_2;
 }
-let elementoNivelAnterior;
-let identificadorNivelAnterior;
-let questions =[];
-function CriarNiveis() {
-    dadosInseridos_3_2(identificadorPerguntaAnterior)
+function validarDadosFormulario_3_2() {
     for (let i=0; i < armazenarDados_3_1.numerQuestions; i++){
         let criterio = validarTextoPergunta(armazenarDados_3_2[i].textoDaPergunta)
         if (criterio === false){
@@ -427,6 +429,11 @@ function CriarNiveis() {
             }
         }
     }
+    montarObjetoParaEnvioServidor()
+    CriarNiveis()
+}
+let questions =[];
+function montarObjetoParaEnvioServidor() {
     armazenarDados_3_2.forEach((item)=>{
         const title = item.textoDaPergunta;
         const color = item.CorDeFundo;
@@ -455,6 +462,12 @@ function CriarNiveis() {
         questions.push(pergunta);
     });
     objNovoQuizz.questions = questions;
+}
+let elementoNivelAnterior;
+let identificadorNivelAnterior;
+function CriarNiveis() {
+    dadosInseridos_3_2(identificadorPerguntaAnterior)
+    validarDadosFormulario_3_2()
     paginaCriarQuizz.innerHTML = `
         <div class="tela-3-3">
             <div class="container-comeco">
@@ -525,6 +538,22 @@ function dadosInseridos_3_3(identificadorDoNivel) {
     const dadosDoFormulario_3_3 = {tituloDoNivel: `${dados_3_3[0]}`, PorcentagemMinAcerto: `${dados_3_3[1]}`, URLdaImagem: `${dados_3_3[2]}`, descricaoDoNivel: `${dados_3_3[3]}`}
     armazenarDados_3_3[identificadorDoNivel - 1] = dadosDoFormulario_3_3;
 }
+function validarDadosFormulario_3_3() {
+    for (let i=0; i < armazenarDados_3_1.numberLevels; i++){
+        if(!(validarTituloNivel(armazenarDados_3_3[i].tituloDoNivel))) {
+            return alert('Preencha a pagina corretamente!')
+        }
+        if(!(porcentagemDeAcertoNivel(armazenarDados_3_3[i].PorcentagemMinAcerto))) {
+            return alert('Preencha a pagina corretamente!')
+        }
+        if(!(validarUrl(armazenarDados_3_3[i].URLdaImagem))) {
+            return alert('Preencha a pagina corretamente!')
+        }
+        if(!(validarTextoNivel(armazenarDados_3_3[i].descricaoDoNivel))) {
+            return alert('Preencha a pagina corretamente!')
+        }
+    }
+}
 function finalizarQuizz() {
     dadosInseridos_3_3(identificadorDoNivel)
     //fazer validação!!!
@@ -578,6 +607,13 @@ function validarTituloNivel(texto) {
 }
 function validarTextoNivel(texto) {
     if (texto.length >= 30){
+        return true;
+    } else{
+        return false;
+    }
+}
+function porcentagemDeAcertoNivel(numero) {
+    if (numero <= 100 || numero >= 0){
         return true;
     } else{
         return false;
