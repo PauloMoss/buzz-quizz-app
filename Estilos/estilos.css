@@ -359,4 +359,8 @@ article.container-resultado{
 }
 .utl-Img{
     text-transform: initial;
+    margin-bottom: 1px;
+}
+.validacaoDeDados {
+    color: red;
 }
