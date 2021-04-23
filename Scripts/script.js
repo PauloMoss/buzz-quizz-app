@@ -276,25 +276,27 @@ function renderizarInputsDaTela_3_1() {
     const inputDaURL = document.querySelector(".dados-entrada-criar input:nth-of-type(2)");
     inputDaURL.setAttribute("class", "utl-Img")
 }
+//Começa aqui 
 let objNovoQuizz = {}
-const armazenarDados_3_1 = [];
+let armazenarDados_3_1;
 function dadosInseridos_3_1() {
+    let dados_3_1 = []
     for(let i = 0; i < inputsDaTela_3_1().length; i++) {
-        armazenarDados_3_1[i] = (document.querySelector(`.dados-entrada-criar input:nth-of-type(${i+1})`).value);
+        dados_3_1[i] = (document.querySelector(`.dados-entrada-criar input:nth-of-type(${i+1})`).value);
     }
-    armazenarDados_3_1[2] = Number(armazenarDados_3_1[2]);
-    armazenarDados_3_1[3] = Number(armazenarDados_3_1[3])
+    const dadosDoFormulario_3_1 = {title: `${dados_3_1[0]}`, image: `${dados_3_1[1]}`, numerQuestions: Number(`${dados_3_1[2]}`), numberLevels: Number(`${dados_3_1[3]}`)}
+    armazenarDados_3_1 = dadosDoFormulario_3_1;
 }
 function validacaoDeDados() {
     dadosInseridos_3_1()
-    const okTitulo = validarTitulo(armazenarDados_3_1[0])
-    const okUrl = validarUrl(armazenarDados_3_1[1])
-    const okQtdPerguntas = validarQtdPerguntas(armazenarDados_3_1[2])
-    const okQtdNiveis = validarQtdNiveis(armazenarDados_3_1[3])
+    const okTitulo = validarTitulo(armazenarDados_3_1.title)
+    const okUrl = validarUrl(armazenarDados_3_1.image)
+    const okQtdPerguntas = validarQtdPerguntas(armazenarDados_3_1.numerQuestions)
+    const okQtdNiveis = validarQtdNiveis(armazenarDados_3_1.numberLevels)
     if (okTitulo && okUrl && okQtdNiveis && okQtdPerguntas) {
         criarPerguntas()
-        objNovoQuizz.title.push(armazenarDados_3_1[0])
-        objNovoQuizz.image.push(armazenarDados_3_1[1])
+        objNovoQuizz.title = (armazenarDados_3_1.title)
+        objNovoQuizz.image = (armazenarDados_3_1.image)
     } else {
         alert('preencha corretamente os dados!')
     };
@@ -309,12 +311,12 @@ function criarPerguntas() {
             </div>
         </div>
         `;
-    quantidadeDePerguntas = armazenarDados_3_1[2];
-    quantidaDeDeNiveis = armazenarDados_3_1[3];
+    quantidadeDePerguntas = armazenarDados_3_1.numerQuestions;
+    quantidaDeDeNiveis = armazenarDados_3_1.numberLevels;
     const paginaPerguntas = document.querySelector('.tela-3-2 .container-comeco');
     for (let i=1; i < quantidadeDePerguntas+1; i++){
         paginaPerguntas.innerHTML += `
-            <article class="dados-entrada-criar" id="Pergunta ${i}">
+            <article class="dados-entrada-criar" id="${i}">
                 <div class="pergunta-minimizada">
                     <h2>Pergunta ${i}</h2>
                     <img onclick="alternarPergunta(this.parentNode)" src="img/create.svg" alt="expandir pergunta">
@@ -325,15 +327,15 @@ function criarPerguntas() {
     paginaPerguntas.innerHTML += `<button  onclick="CriarNiveis()">Prosseguir pra criar níveis</button>`
     if(elementoPerguntaAnterior===undefined) {
         const iniciarComPrimeiraPerguntaExpandida = document.querySelector(`.container-comeco article:first-of-type`)
-        expandirPergunta(iniciarComPrimeiraPerguntaExpandida, "Pergunta 1")
         elementoPerguntaAnterior = iniciarComPrimeiraPerguntaExpandida;
-        identificadorPerguntaAnterior = "Pergunta 1";
+        identificadorPerguntaAnterior = "1";
+        expandirPergunta( elementoPerguntaAnterior, identificadorPerguntaAnterior)
     }
 }
 let elementoPerguntaAnterior;
 let identificadorPerguntaAnterior;
 function alternarPergunta(elementoSelecionado) {
-    dadosInseridos_3_2()
+    dadosInseridos_3_2(identificadorPerguntaAnterior)
     if (elementoPerguntaAnterior!==undefined) {
         minimizarPergunta(elementoPerguntaAnterior, identificadorPerguntaAnterior)
     } 
@@ -346,14 +348,14 @@ function alternarPergunta(elementoSelecionado) {
 function expandirPergunta(elementoPergunta, identificadorDaPergunta) {
         elementoPergunta.innerHTML = `
         <div class="pergunta-expandida">
-            <h2>${identificadorDaPergunta}</h2>
+            <h2>Pergunta ${identificadorDaPergunta}</h2>
         </div>`
         renderizarInputsDaTela_3_2()
 }
 function minimizarPergunta(elementoPergunta, identificadorDaPergunta) {
             elementoPergunta.innerHTML = `
             <div class="pergunta-minimizada">
-                <h2>${identificadorDaPergunta}</h2>
+                <h2>Pergunta ${identificadorDaPergunta}</h2>
                 <img onclick="alternarPergunta(this.parentNode)" src="img/create.svg" alt="expandir pergunta">
             </div>`;
 }
@@ -373,42 +375,44 @@ function renderizarInputsDaTela_3_2() {
     }
 }
 let armazenarDados_3_2 = [];
-function dadosInseridos_3_2() {
+function dadosInseridos_3_2(identificadorPerguntaAnterior) {
     const qntDeInputsNoFormulario_3_2 = 10;
     const dados_3_2 = []
     for(let i = 0; i < qntDeInputsNoFormulario_3_2; i++) {
         dados_3_2[i] = (document.querySelector(`.pergunta-expandida input:nth-of-type(${i+1})`).value);
     }
     const dadosDoFormulario_3_2 = {textoDaPergunta: `${dados_3_2[0]}`, CorDeFundo: `${dados_3_2[1]}`, RespostaCerta: `${dados_3_2[2]}`, URLdaImagemCerta: `${dados_3_2[3]}`, RespostaErrada1: `${dados_3_2[4]}`, URLdaImagemErrada1: `${dados_3_2[5]}`, RespostaErrada2: `${dados_3_2[6]}`, URLdaImagemErrada2: `${dados_3_2[7]}`, RespostaErrada3: `${dados_3_2[8]}`, URLdaImagemErrada3: `${dados_3_2[9]}`}
-    armazenarDados_3_2.push(dadosDoFormulario_3_2)
+    armazenarDados_3_2[identificadorPerguntaAnterior - 1] = dadosDoFormulario_3_2;
 }
+let elementoNivelAnterior;
+let identificadorNivelAnterior;
+let questions =[];
 function CriarNiveis() {
-    dadosInseridos_3_2()
-    for (let i=0; i<armazenarDados_3_2.textoDaPergunta.length; i++){
+    dadosInseridos_3_2(identificadorPerguntaAnterior)
+    for (let i=0; i < armazenarDados_3_1.numerQuestions; i++){
         let criterio = validarTextoPergunta(armazenarDados_3_2[i].textoDaPergunta)
         if (criterio === false){
             return alert('Preencha a pagina corretamente!')
         }
     }
-    for (let i=0; i<armazenarDados_3_2.CorDeFundo.length; i++){
+    for (let i=0; i < armazenarDados_3_1.numerQuestions; i++){
         let criterio = validarCorHex(armazenarDados_3_2[i].CorDeFundo)
         if (criterio === false){
             return alert('Preencha a pagina corretamente!')
         }
     }
-    for (let i=0; i<armazenarDados_3_2.RespostaCerta.length; i++){
+    for (let i=0; i < armazenarDados_3_1.numerQuestions; i++){
         let criterioTexto = validarTextoRespostas(armazenarDados_3_2[i].RespostaCerta)
         let criterioUrl = validarTextoRespostas(armazenarDados_3_2[i].URLdaImagemCerta)
         if (criterioTexto === false || criterioUrl === false){
             return alert('Preencha a pagina corretamente!')
         }
     }
-    for (let i=0; i<armazenarDados_3_2.RespostaErrada1.length; i++){
+    for (let i=0; i < armazenarDados_3_1.numerQuestions; i++){
         let criterioTexto = validarTextoRespostas(armazenarDados_3_2[i].RespostaErrada1)
         let criterioUrl = validarTextoRespostas(armazenarDados_3_2[i].URLdaImagemErrada1)
         if (criterioTexto === false || criterioUrl === false){
             return alert('Preencha a pagina corretamente!')
-        }
         } else if (armazenarDados_3_2[i].RespostaErrada2 !== ""){
             criterioTexto = validarTextoRespostas(armazenarDados_3_2[i].RespostaErrada2)
             criterioUrl = validarTextoRespostas(armazenarDados_3_2[i].URLdaImagemErrada2)
@@ -428,29 +432,135 @@ function CriarNiveis() {
         const color = item.CorDeFundo;
         const answers = [];
         answers.push({
-            text: item.RespostaCerta;
-            image: item.URLdaImagemCerta;
-            isCorrectAnswer: true;
+            text: item.RespostaCerta,
+            image: item.URLdaImagemCerta,
+            isCorrectAnswer: true
         });
         answers.push({
-            text: item.RespostaErrada1;
-            image: item.URLdaRespostaErrada1;
-            isCorrectAnswer: false;
+            text: item.RespostaErrada1,
+            image: item.URLdaRespostaErrada1,
+            isCorrectAnswer: false
         });
         answers.push({
-            text: item.RespostaErrada2;
-            image: item.URLdaRespostaErrada2;
-            isCorrectAnswer: false;
+            text: item.RespostaErrada2,
+            image: item.URLdaRespostaErrada2,
+            isCorrectAnswer: false
         });
         answers.push({
-            text: item.RespostaErrada3;
-            image: item.URLdaRespostaErrada3;
-            isCorrectAnswer: false;
+            text: item.RespostaErrada3,
+            image: item.URLdaRespostaErrada3,
+            isCorrectAnswer: false
         });
         const pergunta = {title, color, answers};
-        objNovoQuizz.questions.push(pergunta);
+        questions.push(pergunta);
     });
+    objNovoQuizz.questions = questions;
+    paginaCriarQuizz.innerHTML = `
+        <div class="tela-3-3">
+            <div class="container-comeco">
+                <h1>Agora, decida os níveis</h1> 
+            </div>
+        </div>`
+    const paginaNiveis = document.querySelector('.container-comeco');
+    for (let i=1; i < quantidaDeDeNiveis+1; i++){
+        paginaNiveis.innerHTML += `
+        <article class="dados-entrada-criar" id="${i}">
+            <div class="pergunta-minimizada">
+                <h2>Nível ${i}</h2>
+                <img onclick="alternarNivel(this.parentNode)" src="img/create.svg" alt="expandir nivel">
+            </div>
+        </article>`;
+    }
+    paginaNiveis.innerHTML += `<button  onclick="finalizarQuizz()">Finalizar Quizz</button>`
+    if(elementoNivelAnterior===undefined) {
+        const iniciarComPrimeiroNivelExpandido = document.querySelector(`.container-comeco article:first-of-type`)
+        elementoNivelAnterior = iniciarComPrimeiroNivelExpandido;
+        identificadorNivelAnterior = "1";
+        expandirNivel(iniciarComPrimeiroNivelExpandido, identificadorNivelAnterior)
+    }
+}
+let identificadorDoNivel;
+function alternarNivel(elementoSelecionado) {
+    const elementoNivelAtual = elementoSelecionado.parentNode;
+    identificadorDoNivel = elementoNivelAtual.id;
+    dadosInseridos_3_3(identificadorNivelAnterior)
+    if (elementoNivelAnterior!==undefined) {
+        minimizarNivel(elementoNivelAnterior, identificadorNivelAnterior)
+    }
+    expandirNivel(elementoNivelAtual, identificadorDoNivel);
+    elementoNivelAnterior = elementoNivelAtual
+    identificadorNivelAnterior = identificadorDoNivel
+}
+function expandirNivel(elementoNivel, identificadorDoNivel) {
+    elementoNivel.innerHTML = `
+    <div class="pergunta-expandida">
+        <h2>Nível ${identificadorDoNivel}</h2>
+    </div>`
+    renderizarInputsDaTela_3_3()
+}
+function minimizarNivel(elementoNivel, identificadorDoNivel) {
+        elementoNivel.innerHTML = `
+        <div class="pergunta-minimizada">
+            <h2>Nível ${identificadorDoNivel}</h2>
+            <img onclick="alternarNivel(this.parentNode)" src="img/create.svg" alt="expandir nivel">
+        </div>`;
+}
+function renderizarInputsDaTela_3_3() {
+    const placeholderDosInputs = ["Título do nível", "% de acerto mínima", "URL da imagem do nível", "Descrição do nível"];
+    const caixaDeInputsTela_3_3 = document.querySelector(".pergunta-expandida");
+    for(let i = 0; i< 4; i++) {
+        caixaDeInputsTela_3_3.innerHTML+= `
+        <input type="text" placeholder="${placeholderDosInputs[i]}">`
+    }
+    const inputDaURL = document.querySelector(".pergunta-expandida input:nth-of-type(3)");
+    inputDaURL.setAttribute("class", "utl-Img")
+}
+let armazenarDados_3_3 = [];
+function dadosInseridos_3_3(identificadorDoNivel) {
+    const qntDeInputsNoFormulario_3_3 = 4;
+    const dados_3_3 = []
+    for(let i = 0; i < qntDeInputsNoFormulario_3_3; i++) {
+        dados_3_3[i] = (document.querySelector(`.pergunta-expandida input:nth-of-type(${i+1})`).value);
+    }
+    const dadosDoFormulario_3_3 = {tituloDoNivel: `${dados_3_3[0]}`, PorcentagemMinAcerto: `${dados_3_3[1]}`, URLdaImagem: `${dados_3_3[2]}`, descricaoDoNivel: `${dados_3_3[3]}`}
+    armazenarDados_3_3[identificadorDoNivel - 1] = dadosDoFormulario_3_3;
+}
+function finalizarQuizz() {
+    dadosInseridos_3_3(identificadorDoNivel)
+    //fazer validação!!!
 
+    niveis =[];
+    armazenarDados_3_3.forEach((item)=>{
+        const titulo = item.tituloDoNivel;
+        const imagem = item.URLdaImagem;
+        const texto = item.descricaoDoNivel;
+        const valorMinimo = item.PorcentagemMinAcerto;
+        niveis.push({
+            title: titulo,
+            image: imagem,
+            text: texto,
+            minValue: valorMinimo
+        });
+    });
+    objNovoQuizz.levels = niveis;
+    console.log(objNovoQuizz)
+
+    paginaCriarQuizz.innerHTML = `
+        <div class="tela-3-4">
+            <div class="container-comeco fim">
+                <h1>Seu quizz está pronto!</h1>
+                    <div class="quizz fim">
+                        <img src=${armazenarDados_3_1.image}>
+                        <div class="nomeDoQuiz fim">
+                            ${armazenarDados_3_1.title}
+                        </div>
+                    </div>
+                    <button class="reinicia-quizz fim">Acessar Quizz</button>
+                    <button onclick="irParaPaginaInicial()" class="retorna-inicio fim">Voltar pra home</button>
+                </div>
+            </div>
+        </div>
+    `;
 }
 function validarTextoRespostas(texto) {
     if (texto.length > 0){
