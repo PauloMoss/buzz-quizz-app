@@ -1,7 +1,10 @@
 let listaDeQuizzes = [];
 let listaDeQuizzesDoUsuario;
+let tituloDoQuizz;
+let imagemDoQuizz;
 let quantidadeDePerguntas;
 let quantidaDeDeNiveis;
+
 
 obterQuizzes()
 function obterQuizzes() {
@@ -250,6 +253,8 @@ function criarPerguntas() {
     if(okTitulo && okUrl && okQtdNiveis && okQtdPerguntas) {
         document.querySelector('.tela-3-1').classList.toggle('oculto');
         document.querySelector('.tela-3-2').classList.toggle('oculto');
+        tituloDoQuizz = document.querySelector('.dados-entrada-criar input:nth-of-type(1)').value;
+        imagemDoQuizz = document.querySelector('.dados-entrada-criar input:nth-of-type(2)').value;
         quantidadeDePerguntas = document.querySelector('.dados-entrada-criar input:nth-of-type(3)').value;
         quantidaDeDeNiveis = document.querySelector('.dados-entrada-criar input:nth-of-type(4)').value;
         const pagina = document.querySelector('.pagina-criar-Quizz');
@@ -314,9 +319,40 @@ function criarPerguntas() {
         alert('preencha corretamente os dados!')
     }
 }
-function CriarNiveis() {
-
-    const okUrl = validarUrl(document.querySelector('.dados-entrada-criar input:nth-of-type(2)').value)
+function criarNiveis() {
+    listaDePerguntas =[];
+    listaRespostas=[];
+    for(let i=0; i < quantidadeDePerguntas; i++){
+        let formularioPergunta = document.querySelector(`.tela-3-2`).querySelector(`article:nth-of-type(${i+1})`)
+        let titulo;
+        let cor;
+        let respostaCerta;
+        let imagemRespostaCerta;
+        let RespostaErrada =[];
+        let imagemRespostaErrada =[];
+        for(let j=0; j < 10; j++){
+            let numero = j+1;
+            let conteudoDoInput = formularioPergunta.querySelector(`input:nth-of-type(${numero})`).value;
+            if (numero === 1 && validarTextoPergunta(conteudoDoInput)){
+                titulo = conteudoDoInput;
+            } else if (numero === 2 && validarCorHex(conteudoDoInput)){
+                cor = conteudoDoInput;
+            } else if (numero === 3 && validarTextoRespostas(conteudoDoInput)){
+                respostaCerta = conteudoDoInput;
+            } else if (numero === 4 && validarUrl(conteudoDoInput)){
+                imagemRespostaCerta = conteudoDoInput;
+            } else if ((numero !== 1) && (numero !== 3) && (numero % 2 !== 0) && validarTextoRespostas(conteudoDoInput)){
+                RespostaErrada.push(conteudoDoInput);
+            } else if ((numero !== 2) && (numero !== 4) && (numero % 2 === 0) && validarUrl(conteudoDoInput)){
+                imagemRespostaErrada.push(conteudoDoInput);
+            }
+        }
+        listaRespostas.push([{text: `${respostaCerta}`, image: `${imagemRespostaCerta}`, isCorrectAnswer: true}]);
+        for (let k=0; k<RespostaErrada.length; k++){
+            listaRespostas[i].push({text: `${RespostaErrada[k]}`, image: imagemRespostaErrada[k], isCorrectAnswer: false})
+        }
+        listaDePerguntas[i] = {title: `${titulo}`, color: `${cor}`, answers: listaRespostas} //listaDePerguntas é o questions: que será enviado ao servidor.
+    }
 }
 function alternarPergunta(elemento) {
     const elementoVisivel = document.querySelector('.pergunta-expandida:not(.oculto)');
