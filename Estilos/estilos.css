@@ -372,6 +372,7 @@ article.container-resultado{
 }
 .validacaoDeDados {
     color: red;
+    margin-bottom: 1px;
 }
 @media (max-width: 1100px) {
     .pagina-inicial{
@@ -533,5 +534,3 @@ article.container-resultado{
     .container-resultado .resultado {
         word-break: break-all;
     }
-    margin-bottom: 1px;
-}
