@@ -362,36 +362,36 @@ function minimizarPergunta(elementoPergunta, identificadorDaPergunta) {
 
 let formulario_3_2 = []
 formulario_3_2[0] = ["","","","","","","","","","",];
-function renderizarInputsDaTela_3_2(identificadorDaPergunta) {
+function renderizarInputsDaTela_3_2(id) {
     const caixaDeInputsTela_3_2 = document.querySelector(".pergunta-expandida");
     const placeholderDosInputs = ["Resposta incorreta 1", "URL da imagem 1", "Resposta incorreta 2", "URL da imagem 2", "Resposta incorreta 3", "URL da imagem 3"];
     caixaDeInputsTela_3_2.innerHTML+= `
-    <input type="text" placeholder="Texto da pergunta" value=${formulario_3_2[identificadorDaPergunta-1][0]}>
-    <input class="corHex" type="text" placeholder="Cor de fundo da pergunta (Hexadecimal)" value=${formulario_3_2[identificadorDaPergunta-1][1]}>
+    <input type="text" placeholder="Texto da pergunta" value=${formulario_3_2[id-1][0]}>
+    <input class="corHex" type="text" placeholder="Cor de fundo da pergunta (Hexadecimal)" value=${formulario_3_2[id-1][1]}>
     <h2>Resposta correta</h2>
-    <input type="text" placeholder="Resposta correta" value=${formulario_3_2[identificadorDaPergunta-1][2]}>
-    <input class="utl-Img" type="text" title="A imagem deve possuir uma URL válida!" placeholder="URL da imagem" value=${formulario_3_2[identificadorDaPergunta-1][3]}>
+    <input type="text" placeholder="Resposta correta" value=${formulario_3_2[id-1][2]}>
+    <input class="utl-Img" type="text" title="A imagem deve possuir uma URL válida!" placeholder="URL da imagem" value=${formulario_3_2[id-1][3]}>
     <h2>Respostas incorretas</h2>`
     for(let i = 0; i< 5; i+=2) {
         caixaDeInputsTela_3_2.innerHTML+= `
-        <input type="text" placeholder="${placeholderDosInputs[i]}" value=${formulario_3_2[identificadorDaPergunta-1][4+i]}>
-        <input class="utl-Img" type="text" placeholder="${placeholderDosInputs[i+1]}"  title="A imagem deve possuir uma URL válida!" value=${formulario_3_2[identificadorDaPergunta-1][5+i]}>`
+        <input type="text" placeholder="${placeholderDosInputs[i]}" value=${formulario_3_2[id-1][4+i]}>
+        <input class="utl-Img" type="text" placeholder="${placeholderDosInputs[i+1]}"  title="A imagem deve possuir uma URL válida!" value=${formulario_3_2[id-1][5+i]}>`
     }
 }
-let dados_3_2 = []
 let armazenarDados_3_2 = [];
-function dadosInseridos_3_2(identificadorPerguntaAnterior) {
+function dadosInseridos_3_2(id) {
     const qntDeInputsNoFormulario_3_2 = 10;
     for(let i = 0; i < qntDeInputsNoFormulario_3_2; i++) {
-        formulario_3_2[identificadorPerguntaAnterior-1][i] = (document.querySelector(`.pergunta-expandida input:nth-of-type(${i+1})`).value);
+        formulario_3_2[id-1][i] = (document.querySelector(`.pergunta-expandida input:nth-of-type(${i+1})`).value);
     }
-    if(formulario_3_2[identificadorPerguntaAnterior]===undefined){
-        formulario_3_2[identificadorPerguntaAnterior] = ["","","","","","","","","","",]
+    if(formulario_3_2[id]===undefined && id < quantidadeDePerguntas){
+        formulario_3_2[id] = ["","","","","","","","","","",]
     }
-    const dadosDoFormulario_3_2 = {textoDaPergunta: `${dados_3_2[0]}`, CorDeFundo: `${dados_3_2[1]}`, RespostaCerta: `${dados_3_2[2]}`, URLdaImagemCerta: `${dados_3_2[3]}`, RespostaErrada1: `${dados_3_2[4]}`, URLdaImagemErrada1: `${dados_3_2[5]}`, RespostaErrada2: `${dados_3_2[6]}`, URLdaImagemErrada2: `${dados_3_2[7]}`, RespostaErrada3: `${dados_3_2[8]}`, URLdaImagemErrada3: `${dados_3_2[9]}`}
-    armazenarDados_3_2[identificadorPerguntaAnterior - 1] = dadosDoFormulario_3_2;
+    const dadosDoFormulario_3_2 = {textoDaPergunta: `${formulario_3_2[id-1][0]}`, CorDeFundo: `${formulario_3_2[id-1][1]}`, RespostaCerta: `${formulario_3_2[id-1][2]}`, URLdaImagemCerta: `${formulario_3_2[id-1][3]}`, RespostaErrada1: `${formulario_3_2[id-1][4]}`, URLdaImagemErrada1: `${formulario_3_2[id-1][5]}`, RespostaErrada2: `${formulario_3_2[id-1][6]}`, URLdaImagemErrada2: `${formulario_3_2[id-1][7]}`, RespostaErrada3: `${formulario_3_2[id-1][8]}`, URLdaImagemErrada3: `${formulario_3_2[id-1][9]}`}
+    armazenarDados_3_2[id - 1] = dadosDoFormulario_3_2;
 }
 function validarDadosFormulario_3_2() {
+    dadosInseridos_3_2(identificadorPerguntaAnterior)
     for (let i=0; i < armazenarDados_3_1.numerQuestions; i++){
         let criterio = validarTextoPergunta(armazenarDados_3_2[i].textoDaPergunta)
         if (criterio === false){
@@ -479,8 +479,6 @@ function montarObjetoParaEnvioServidor() {
 let elementoNivelAnterior;
 let identificadorNivelAnterior;
 function CriarNiveis() {
-    dadosInseridos_3_2(identificadorPerguntaAnterior)
-    validarDadosFormulario_3_2()
     paginaCriarQuizz.innerHTML = `
         <div class="tela-3-3">
             <div class="container-comeco">
@@ -522,7 +520,7 @@ function expandirNivel(elementoNivel, identificadorDoNivel) {
     <div class="pergunta-expandida">
         <h2>Nível ${identificadorDoNivel}</h2>
     </div>`
-    renderizarInputsDaTela_3_3()
+    renderizarInputsDaTela_3_3(identificadorDoNivel)
 }
 function minimizarNivel(elementoNivel, identificadorDoNivel) {
         elementoNivel.innerHTML = `
@@ -531,25 +529,29 @@ function minimizarNivel(elementoNivel, identificadorDoNivel) {
             <img onclick="alternarNivel(this.parentNode)" src="img/create.svg" alt="expandir nivel">
         </div>`;
 }
-function renderizarInputsDaTela_3_3() {
+let formulario_3_3 = []
+formulario_3_3[0] = ["","","",""];
+function renderizarInputsDaTela_3_3(id) {
     const placeholderDosInputs = ["Título do nível", "% de acerto mínima", "URL da imagem do nível", "Descrição do nível"];
     const caixaDeInputsTela_3_3 = document.querySelector(".pergunta-expandida");
     for(let i = 0; i< 4; i++) {
         caixaDeInputsTela_3_3.innerHTML+= `
-        <input type="text" placeholder="${placeholderDosInputs[i]}">`
+        <input type="text" placeholder="${placeholderDosInputs[i]}" value=${formulario_3_3[id-1][i]}>`
     }
     const inputDaURL = document.querySelector(".pergunta-expandida input:nth-of-type(3)");
     inputDaURL.setAttribute("class", "utl-Img")
 }
 let armazenarDados_3_3 = [];
-function dadosInseridos_3_3(identificadorDoNivel) {
+function dadosInseridos_3_3(id) {
     const qntDeInputsNoFormulario_3_3 = 4;
-    const dados_3_3 = []
     for(let i = 0; i < qntDeInputsNoFormulario_3_3; i++) {
-        dados_3_3[i] = (document.querySelector(`.pergunta-expandida input:nth-of-type(${i+1})`).value);
+        formulario_3_3[id-1][i] = (document.querySelector(`.pergunta-expandida input:nth-of-type(${i+1})`).value);
     }
-    const dadosDoFormulario_3_3 = {tituloDoNivel: `${dados_3_3[0]}`, PorcentagemMinAcerto: `${dados_3_3[1]}`, URLdaImagem: `${dados_3_3[2]}`, descricaoDoNivel: `${dados_3_3[3]}`}
-    armazenarDados_3_3[identificadorDoNivel - 1] = dadosDoFormulario_3_3;
+    if(formulario_3_3[id]===undefined && id < quantidaDeDeNiveis){
+        formulario_3_3[id] = ["","","",""]
+    }
+    const dadosDoFormulario_3_3 = {tituloDoNivel: `${formulario_3_3[id-1][0]}`, PorcentagemMinAcerto: `${formulario_3_3[id-1][1]}`, URLdaImagem: `${formulario_3_3[id-1][2]}`, descricaoDoNivel: `${formulario_3_3[id-1][3]}`}
+    armazenarDados_3_3[id - 1] = dadosDoFormulario_3_3;
 }
 function validarDadosFormulario_3_3() {
     for (let i=0; i < armazenarDados_3_1.numberLevels; i++){
