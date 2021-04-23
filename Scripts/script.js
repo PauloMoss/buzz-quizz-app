@@ -1,5 +1,6 @@
 let listaDeQuizzes = [];
-let listaDeQuizzesDoUsuario;
+let listaDeQuizzesDoUsuario =[];
+let idMaisRecente;
 obterQuizzes()
 function obterQuizzes() {
     const promessa = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/buzzquizz/quizzes")
@@ -36,11 +37,11 @@ function verificarSeusQuizzes() {
 }
 function renderizarSeusQuizzes () {
     // usar find aqui
-        criarQuiz.classList.add("oculto");
+        //criarQuiz.classList.add("oculto");
         seusQuizzes.innerHTML = "";
         for(let i = 0; i < listaDeQuizzesDoUsuario.length; i++) {
             seusQuizzes.innerHTML += `
-            <li class="quizz">
+            <li class="quizz" onclick="escolherQuizz(this)" id="${listaDeQuizzesDoUsuario[i].id}">
                 <img src=${listaDeQuizzesDoUsuario[i].image}>
                 <div class="nomeDoQuiz">${listaDeQuizzesDoUsuario[i].title}</div>
             </li>
@@ -298,7 +299,7 @@ function validacaoDeDados() {
         objNovoQuizz.title = (armazenarDados_3_1.title)
         objNovoQuizz.image = (armazenarDados_3_1.image)
     } else {
-        alert('preencha corretamente os dados!')
+        alert('preencha novamente os dados!')
     };
 }
 let quantidadeDePerguntas;
@@ -392,38 +393,50 @@ function CriarNiveis() {
     for (let i=0; i < armazenarDados_3_1.numerQuestions; i++){
         let criterio = validarTextoPergunta(armazenarDados_3_2[i].textoDaPergunta)
         if (criterio === false){
-            return alert('Preencha a pagina corretamente!')
+            armazenarDados_3_2 = []
+            return alert('Preencha a pagina toda, novamente!')
+            ;
         }
     }
     for (let i=0; i < armazenarDados_3_1.numerQuestions; i++){
         let criterio = validarCorHex(armazenarDados_3_2[i].CorDeFundo)
         if (criterio === false){
-            return alert('Preencha a pagina corretamente!')
+            armazenarDados_3_2 = []
+            return alert('Preencha a pagina toda, novamente!')
+            ;
         }
     }
     for (let i=0; i < armazenarDados_3_1.numerQuestions; i++){
         let criterioTexto = validarTextoRespostas(armazenarDados_3_2[i].RespostaCerta)
         let criterioUrl = validarTextoRespostas(armazenarDados_3_2[i].URLdaImagemCerta)
         if (criterioTexto === false || criterioUrl === false){
-            return alert('Preencha a pagina corretamente!')
+            armazenarDados_3_2 = []
+            return alert('Preencha a pagina toda, novamente!')
+            ;
         }
     }
     for (let i=0; i < armazenarDados_3_1.numerQuestions; i++){
         let criterioTexto = validarTextoRespostas(armazenarDados_3_2[i].RespostaErrada1)
         let criterioUrl = validarTextoRespostas(armazenarDados_3_2[i].URLdaImagemErrada1)
         if (criterioTexto === false || criterioUrl === false){
-            return alert('Preencha a pagina corretamente!')
+            armazenarDados_3_2 = []
+            return alert('Preencha a pagina toda, novamente!')
+            ;
         } else if (armazenarDados_3_2[i].RespostaErrada2 !== ""){
             criterioTexto = validarTextoRespostas(armazenarDados_3_2[i].RespostaErrada2)
             criterioUrl = validarTextoRespostas(armazenarDados_3_2[i].URLdaImagemErrada2)
             if (criterioTexto === false || criterioUrl === false){
-                return alert('Preencha a pagina corretamente!')
+                armazenarDados_3_2 = []
+                return alert('Preencha a pagina toda, novamente!')
+                ;
             }
         } else if (armazenarDados_3_2[i].RespostaErrada3 !== ""){
             criterioTexto = validarTextoRespostas(armazenarDados_3_2[i].RespostaErrada2)
             criterioUrl = validarTextoRespostas(armazenarDados_3_2[i].URLdaImagemErrada2)
             if (criterioTexto === false || criterioUrl === false){
-                return alert('Preencha a pagina corretamente!')
+                armazenarDados_3_2 = []
+                return alert('Preencha a pagina toda, novamente!')
+                ;
             }
         }
     }
@@ -527,8 +540,42 @@ function dadosInseridos_3_3(identificadorDoNivel) {
 }
 function finalizarQuizz() {
     dadosInseridos_3_3(identificadorDoNivel)
-    //fazer validação!!!
-
+    ListaPorcentagemMinAcerto =[];
+    for (let i=0; i < armazenarDados_3_1.numberLevels; i++){
+        let criterio = validarTituloNivel(armazenarDados_3_3[i].tituloDoNivel)
+        if (criterio === false){
+            armazenarDados_3_3 = [];
+            return alert('Preencha a pagina toda, novamente!')
+        }
+    }
+    for (let i=0; i < armazenarDados_3_1.numberLevels; i++){
+        let criterio = validarUrl(armazenarDados_3_3[i].URLdaImagem)
+        if (criterio === false){
+            armazenarDados_3_3 = [];
+            return alert('Preencha a pagina toda, novamente!')
+        }
+    }
+    for (let i=0; i < armazenarDados_3_1.numberLevels; i++){
+        let criterio = validarTextoNivel(armazenarDados_3_3[i].descricaoDoNivel)
+        if (criterio === false){
+            armazenarDados_3_3 = [];
+            return alert('Preencha a pagina toda, novamente!')
+        }
+    }
+    for (let i=0; i < armazenarDados_3_1.numberLevels; i++){
+        let criterio = validarAcertoNivel(armazenarDados_3_3[i].PorcentagemMinAcerto)
+        if (criterio === false){
+            armazenarDados_3_3 = [];
+            return alert('Preencha a pagina toda, novamente!')
+        } else {
+            ListaPorcentagemMinAcerto.push(parseInt(armazenarDados_3_3[i].PorcentagemMinAcerto));
+        }
+    }
+    let found = ListaPorcentagemMinAcerto.find(elemento => elemento === 0);
+    if (found === undefined){
+        armazenarDados_3_3 = [];
+        return alert('Preencha a pagina toda, novamente!')
+    }
     niveis =[];
     armazenarDados_3_3.forEach((item)=>{
         const titulo = item.tituloDoNivel;
@@ -543,27 +590,59 @@ function finalizarQuizz() {
         });
     });
     objNovoQuizz.levels = niveis;
-    console.log(objNovoQuizz)
-
+    
+    const request = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/buzzquizz/quizzes", objNovoQuizz);
+    request.catch(QuizzErro)
+    request.then(QuizzEnviado)
+    //onclick id
     paginaCriarQuizz.innerHTML = `
         <div class="tela-3-4">
             <div class="container-comeco fim">
                 <h1>Seu quizz está pronto!</h1>
-                    <div class="quizz fim">
+                    <div class="quizz fim" onclick="escolherQuizz(this)" id=''> 
                         <img src=${armazenarDados_3_1.image}>
                         <div class="nomeDoQuiz fim">
                             ${armazenarDados_3_1.title}
                         </div>
                     </div>
-                    <button class="reinicia-quizz fim">Acessar Quizz</button>
-                    <button onclick="irParaPaginaInicial()" class="retorna-inicio fim">Voltar pra home</button>
-                </div>
+                <button class="reinicia-quizz fim">Acessar Quizz</button>
+                <button onclick="irParaPaginaInicial()" class="retorna-inicio fim">Voltar pra home</button>
             </div>
         </div>
     `;
 }
+function QuizzEnviado(resposta) {
+    const promessa = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/buzzquizz/quizzes")
+    promessa.then(renderizarQuizzNaTela3_4)
+    listaDeQuizzesDoUsuario.push(resposta);
+    idMaisRecente = parseInt(resposta.id);
+}
+function renderizarQuizzNaTela3_4() {
+    document.querySelector('.container-comeco.fim').innerHTML = `
+        <h1>Seu quizz está pronto!</h1>
+        <div class="quizz fim" onclick="escolherQuizz(this)" id='${idMaisRecente}'> 
+            <img src=${armazenarDados_3_1.image}>
+            <div class="nomeDoQuiz fim">
+                ${armazenarDados_3_1.title}
+            </div>
+        </div>
+        <button class="reinicia-quizz fim" onclick="escolherQuizz(this)" id='${idMaisRecente}'>Acessar Quizz</button>
+        <button onclick="irParaPaginaInicial()" class="retorna-inicio fim">Voltar pra home</button>
+    `;
+}
+function QuizzErro (retorno) {
+    alert(`Erro: ${retorno.response.status}`)
+}
 function validarTextoRespostas(texto) {
     if (texto.length > 0){
+        return true;
+    } else{
+        return false;
+    }
+}
+function validarAcertoNivel(valor) {
+    const acertoMin = parseInt(valor)
+    if (acertoMin >= 0 || acertoMin <= 100){
         return true;
     } else{
         return false;
