@@ -1,6 +1,6 @@
 let listaDeQuizzes = [];
-let listaDeQuizzesDoUsuario =[];
-let idMaisRecente;
+let listaDosSeusQuizzesSerializada;
+
 obterQuizzes()
 function obterQuizzes() {
     const promessa = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/buzzquizz/quizzes")
@@ -28,22 +28,23 @@ function renderizarTodosQuizzes() {
     }
 }
 function verificarSeusQuizzes() {
-    if(listaDeQuizzesDoUsuario===undefined) {
+    listaDosSeusQuizzesSerializada = localStorage.getItem("SeusQuizzes");
+    if(listaDosSeusQuizzesSerializada!==null) {
+        listaDosSeusQuizzes = JSON.parse(listaDosSeusQuizzesSerializada)
+        criarQuiz.classList.add("oculto")
+        renderizarSeusQuizzes (listaDosSeusQuizzes)
+    } else {
         seusQuizzes.classList.add("oculto");
         seusQuizzesTitulo.classList.add("oculto")
-    } else {
-        renderizarSeusQuizzes ()
     }
 }
-function renderizarSeusQuizzes () {
-    // usar find aqui
-        //criarQuiz.classList.add("oculto");
+function renderizarSeusQuizzes (listaDosSeusQuizzes) {
         seusQuizzes.innerHTML = "";
-        for(let i = 0; i < listaDeQuizzesDoUsuario.length; i++) {
+        for(let i = 0; i < listaDosSeusQuizzes.length; i++) {
             seusQuizzes.innerHTML += `
-            <li class="quizz" onclick="escolherQuizz(this)" id="${listaDeQuizzesDoUsuario[i].id}">
-                <img src=${listaDeQuizzesDoUsuario[i].image}>
-                <div class="nomeDoQuiz">${listaDeQuizzesDoUsuario[i].title}</div>
+            <li class="quizz" onclick="escolherQuizz(this)" id="${listaDosSeusQuizzes[i].id}">
+                <img src=${listaDosSeusQuizzes[i].image}>
+                <div class="nomeDoQuiz">${listaDosSeusQuizzes[i].title}</div>
             </li>
             `;
         }
@@ -287,6 +288,8 @@ function dadosInseridos_3_1() {
     }
     armazenarDados_3_1 = {title: `${dados_3_1[0]}`, image: `${dados_3_1[1]}`, numerQuestions: Number(`${dados_3_1[2]}`), numberLevels: Number(`${dados_3_1[3]}`)}
 }
+let quantidadeDePerguntas;
+let quantidaDeDeNiveis;
 function validacaoDeDados() {
     dadosInseridos_3_1()
     const okTitulo = validarTitulo(armazenarDados_3_1.title)
@@ -294,6 +297,8 @@ function validacaoDeDados() {
     const okQtdPerguntas = validarQtdPerguntas(armazenarDados_3_1.numerQuestions)
     const okQtdNiveis = validarQtdNiveis(armazenarDados_3_1.numberLevels)
     if (okTitulo && okUrl && okQtdNiveis && okQtdPerguntas) {
+        quantidadeDePerguntas = armazenarDados_3_1.numerQuestions;
+        quantidaDeDeNiveis = armazenarDados_3_1.numberLevels;
         criarPerguntas()
         objNovoQuizz.title = (armazenarDados_3_1.title)
         objNovoQuizz.image = (armazenarDados_3_1.image)
@@ -301,18 +306,13 @@ function validacaoDeDados() {
         alert('preencha novamente os dados!')
     };
 }
-let quantidadeDePerguntas;
-let quantidaDeDeNiveis;
 function criarPerguntas() {
     paginaCriarQuizz.innerHTML = `
         <div class="tela-3-2">
             <div class="container-comeco">
                 <h1>Crie suas perguntas</h1>
             </div>
-        </div>
-        `;
-    quantidadeDePerguntas = armazenarDados_3_1.numerQuestions;
-    quantidaDeDeNiveis = armazenarDados_3_1.numberLevels;
+        </div>`;
     const paginaPerguntas = document.querySelector('.tela-3-2 .container-comeco');
     for (let i=1; i < quantidadeDePerguntas+1; i++){
         paginaPerguntas.innerHTML += `
@@ -458,17 +458,17 @@ function montarObjetoParaEnvioServidor() {
         });
         answers.push({
             text: item.RespostaErrada1,
-            image: item.URLdaRespostaErrada1,
+            image: item.URLdaImagemErrada1,
             isCorrectAnswer: false
         });
         answers.push({
             text: item.RespostaErrada2,
-            image: item.URLdaRespostaErrada2,
+            image: item.URLdaImagemErrada2,
             isCorrectAnswer: false
         });
         answers.push({
             text: item.RespostaErrada3,
-            image: item.URLdaRespostaErrada3,
+            image: item.URLdaImagemErrada3,
             isCorrectAnswer: false
         });
         const pergunta = {title, color, answers};
@@ -495,7 +495,7 @@ function CriarNiveis() {
             </div>
         </article>`;
     }
-    paginaNiveis.innerHTML += `<button  onclick="finalizarQuizz()">Finalizar Quizz</button>`
+    paginaNiveis.innerHTML += `<button  onclick="validarDadosFormulario_3_3()">Finalizar Quizz</button>`
     if(elementoNivelAnterior===undefined) {
         const iniciarComPrimeiroNivelExpandido = document.querySelector(`.container-comeco article:first-of-type`)
         elementoNivelAnterior = iniciarComPrimeiroNivelExpandido;
@@ -554,6 +554,8 @@ function dadosInseridos_3_3(id) {
     armazenarDados_3_3[id - 1] = dadosDoFormulario_3_3;
 }
 function validarDadosFormulario_3_3() {
+    dadosInseridos_3_3(identificadorDoNivel);
+    let ListaPorcentagemMinAcerto = [];
     for (let i=0; i < armazenarDados_3_1.numberLevels; i++){
         if(!(validarTituloNivel(armazenarDados_3_3[i].tituloDoNivel))) {
             return alert('Preencha a pagina corretamente!')
@@ -567,11 +569,17 @@ function validarDadosFormulario_3_3() {
         if(!(validarTextoNivel(armazenarDados_3_3[i].descricaoDoNivel))) {
             return alert('Preencha a pagina corretamente!')
         }
+        ListaPorcentagemMinAcerto.push(parseInt(armazenarDados_3_3[i].PorcentagemMinAcerto));
     }
+    let found = ListaPorcentagemMinAcerto.find(elemento => elemento === 0);
+    if (found === undefined){
+        return alert('Preencha a pagina toda, novamente!');
+    }
+    finalizarQuizz()
 }
 function finalizarQuizz() {
-    dadosInseridos_3_3(identificadorDoNivel)
-    ListaPorcentagemMinAcerto =[];
+    
+    /**ListaPorcentagemMinAcerto =[];
     for (let i=0; i < armazenarDados_3_1.numberLevels; i++){
         let criterio = validarTituloNivel(armazenarDados_3_3[i].tituloDoNivel)
         if (criterio === false){
@@ -606,7 +614,7 @@ function finalizarQuizz() {
     if (found === undefined){
         armazenarDados_3_3 = [];
         return alert('Preencha a pagina toda, novamente!')
-    }
+    }**/
     niveis =[];
     armazenarDados_3_3.forEach((item)=>{
         const titulo = item.tituloDoNivel;
@@ -642,27 +650,33 @@ function finalizarQuizz() {
         </div>
     `;
 }
+let listaDeQuizzesDoUsuario =[];
+let idQuizzEnviado;
 function QuizzEnviado(resposta) {
-    const promessa = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/buzzquizz/quizzes")
-    promessa.then(renderizarQuizzNaTela3_4)
-    listaDeQuizzesDoUsuario.push(resposta);
-    idMaisRecente = parseInt(resposta.id);
+    idQuizzEnviado = resposta.data.id;
+    listaDeQuizzesDoUsuario.push(resposta.data);
+    const listaSeriada = JSON.stringify(listaDeQuizzesDoUsuario);
+    localStorage.setItem("SeusQuizzes", listaSeriada);
+    const promessa = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/buzzquizz/${idQuizzEnviado}`)
+    promessa.then(renderizarQuizzNaTela3_4);
 }
 function renderizarQuizzNaTela3_4() {
     document.querySelector('.container-comeco.fim').innerHTML = `
         <h1>Seu quizz está pronto!</h1>
-        <div class="quizz fim" onclick="escolherQuizz(this)" id='${idMaisRecente}'> 
+        <div class="quizz fim" onclick="escolherQuizz(this)" id='${idQuizzEnviado}'> 
             <img src=${armazenarDados_3_1.image}>
             <div class="nomeDoQuiz fim">
                 ${armazenarDados_3_1.title}
             </div>
         </div>
-        <button class="reinicia-quizz fim" onclick="escolherQuizz(this)" id='${idMaisRecente}'>Acessar Quizz</button>
+        <button class="reinicia-quizz fim" onclick="escolherQuizz(this)" id='${idQuizzEnviado}'>Acessar Quizz</button>
         <button onclick="irParaPaginaInicial()" class="retorna-inicio fim">Voltar pra home</button>
     `;
 }
-function QuizzErro (retorno) {
-    alert(`Erro: ${retorno.response.status}`)
+function QuizzErro (erro) {
+    const error = erro.response.data;
+    const statusErro = erro.response.status;
+    alert(`Erro: ${statusErro}`)
 }
 function validarTextoRespostas(texto) {
     if (texto.length > 0){
