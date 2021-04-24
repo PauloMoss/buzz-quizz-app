@@ -478,16 +478,20 @@ function montarObjetoParaEnvioServidor() {
             image: item.URLdaImagemErrada1,
             isCorrectAnswer: false
         });
-        answers.push({
-            text: item.RespostaErrada2,
-            image: item.URLdaImagemErrada2,
-            isCorrectAnswer: false
-        });
+        if(item.RespostaErrada2 !== ""){
+            answers.push({
+                text: item.RespostaErrada2,
+                image: item.URLdaImagemErrada2,
+                isCorrectAnswer: false
+            });
+        }
+        else if(item.RespostaErrada3 !== ""){
         answers.push({
             text: item.RespostaErrada3,
             image: item.URLdaImagemErrada3,
             isCorrectAnswer: false
         });
+        }
         const pergunta = {title, color, answers};
         questions.push(pergunta);
     });
