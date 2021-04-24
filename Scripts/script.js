@@ -1,6 +1,5 @@
 let listaDeQuizzes = [];
 let listaDosSeusQuizzesSerializada;
-
 obterQuizzes()
 function obterQuizzes() {
     const promessa = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/buzzquizz/quizzes")
@@ -102,7 +101,6 @@ function adicionarPergunta() {
     }
     renderizarRespostas(perguntas)
 }
-
 function renderizarRespostas(perguntas) {
     let todasAsRespostas = [];
     for(let i =0; i < perguntas.length; i++) {
@@ -599,43 +597,6 @@ function validarDadosFormulario_3_3() {
     finalizarQuizz()
 }
 function finalizarQuizz() {
-    
-    /**ListaPorcentagemMinAcerto =[];
-    for (let i=0; i < armazenarDados_3_1.numberLevels; i++){
-        let criterio = validarTituloNivel(armazenarDados_3_3[i].tituloDoNivel)
-        if (criterio === false){
-            armazenarDados_3_3 = [];
-            return alert('Preencha a pagina toda, novamente!')
-        }
-    }
-    for (let i=0; i < armazenarDados_3_1.numberLevels; i++){
-        let criterio = validarUrl(armazenarDados_3_3[i].URLdaImagem)
-        if (criterio === false){
-            armazenarDados_3_3 = [];
-            return alert('Preencha a pagina toda, novamente!')
-        }
-    }
-    for (let i=0; i < armazenarDados_3_1.numberLevels; i++){
-        let criterio = validarTextoNivel(armazenarDados_3_3[i].descricaoDoNivel)
-        if (criterio === false){
-            armazenarDados_3_3 = [];
-            return alert('Preencha a pagina toda, novamente!')
-        }
-    }
-    for (let i=0; i < armazenarDados_3_1.numberLevels; i++){
-        let criterio = validarAcertoNivel(armazenarDados_3_3[i].PorcentagemMinAcerto)
-        if (criterio === false){
-            armazenarDados_3_3 = [];
-            return alert('Preencha a pagina toda, novamente!')
-        } else {
-            ListaPorcentagemMinAcerto.push(parseInt(armazenarDados_3_3[i].PorcentagemMinAcerto));
-        }
-    }
-    let found = ListaPorcentagemMinAcerto.find(elemento => elemento === 0);
-    if (found === undefined){
-        armazenarDados_3_3 = [];
-        return alert('Preencha a pagina toda, novamente!')
-    }**/
     niveis =[];
     armazenarDados_3_3.forEach((item)=>{
         const titulo = item.tituloDoNivel;
@@ -654,45 +615,36 @@ function finalizarQuizz() {
     const request = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/buzzquizz/quizzes", objNovoQuizz);
     request.catch(QuizzErro)
     request.then(QuizzEnviado)
-    //onclick id
-    paginaCriarQuizz.innerHTML = `
-        <div class="tela-3-4">
-            <div class="container-comeco fim">
-                <h1>Seu quizz está pronto!</h1>
-                    <div class="quizz fim" onclick="escolherQuizz(this)" id=''> 
-                        <img src=${armazenarDados_3_1.image}>
-                        <div class="nomeDoQuiz fim">
-                            ${armazenarDados_3_1.title}
-                        </div>
-                    </div>
-                <button class="reinicia-quizz fim">Acessar Quizz</button>
-                <button onclick="irParaPaginaInicial()" class="retorna-inicio fim">Voltar pra home</button>
-            </div>
-        </div>
-    `;
+    
 }
 let listaDeQuizzesDoUsuario =[];
 let idQuizzEnviado;
 function QuizzEnviado(resposta) {
     idQuizzEnviado = (resposta.data.id);
+    if(listaDosSeusQuizzesSerializada!==null) {
+        listaDeQuizzesDoUsuario = JSON.parse(listaDosSeusQuizzesSerializada)
+    }
     listaDeQuizzesDoUsuario.push(resposta.data);
-    const listaSeriada = JSON.stringify(listaDeQuizzesDoUsuario);
-    localStorage.setItem("SeusQuizzes", listaSeriada);
-    const promessa = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/buzzquizz/${idQuizzEnviado}`)
-    promessa.then(renderizarQuizzNaTela3_4);
+    listaDosSeusQuizzesSerializada = JSON.stringify(listaDeQuizzesDoUsuario);
+    localStorage.setItem("SeusQuizzes", listaDosSeusQuizzesSerializada);
+    renderizarQuizzNaTela3_4();
 }
 function renderizarQuizzNaTela3_4() {
-    document.querySelector('.container-comeco.fim').innerHTML = `
-        <h1>Seu quizz está pronto!</h1>
-        <div class="quizz fim" onclick="escolherQuizz(this)" id='${idQuizzEnviado}'> 
-            <img src=${armazenarDados_3_1.image}>
-            <div class="nomeDoQuiz fim">
-                ${armazenarDados_3_1.title}
+    paginaCriarQuizz.innerHTML = `
+    <div class="tela-3-4">
+        <div class="container-comeco fim">
+            <h1>Seu quizz está pronto!</h1>
+            <div class="quizz fim" onclick="escolherQuizz(this)" id='${idQuizzEnviado}'> 
+                <img src=${armazenarDados_3_1.image}>
+                <div class="nomeDoQuiz fim">
+                    ${armazenarDados_3_1.title}
+                </div>
             </div>
+            <button class="reinicia-quizz fim" onclick="escolherQuizz(this)" id='${idQuizzEnviado}'>Acessar Quizz</button>
+            <button onclick="irParaPaginaInicial()" class="retorna-inicio fim">Voltar pra home</button>
         </div>
-        <button class="reinicia-quizz fim" onclick="escolherQuizz(this)" id='${idQuizzEnviado}'>Acessar Quizz</button>
-        <button onclick="irParaPaginaInicial()" class="retorna-inicio fim">Voltar pra home</button>
-    `;
+    </div>
+        `;
 }
 function QuizzErro (erro) {
     const error = erro.response.data;
