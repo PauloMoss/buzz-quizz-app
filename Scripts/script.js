@@ -2,6 +2,7 @@ let listaDeQuizzes = [];
 let listaDosSeusQuizzesSerializada;
 obterQuizzes()
 function obterQuizzes() {
+    addLoadingScreen()
     const promessa = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/buzzquizz/quizzes")
     promessa.then(renderizarQuizzesNaTela)
 }
@@ -10,6 +11,7 @@ function renderizarQuizzesNaTela(resposta) {
     verificarSeusQuizzes()
     renderizarTodosQuizzes()
     window.scrollTo(0, 0);
+    removeLoadingScreen()
 }
 const criarQuiz = document.querySelector(".criarQuizz");
 const seusQuizzes = document.querySelector(".seusQuizzes");
@@ -131,7 +133,7 @@ function adicionarButaoVoltar() {
         <button class="reinicia-quizz" onclick="resetarQuizz()">Reiniciar Quizz</button>
         <button onclick="irParaPaginaInicial()" class="retorna-inicio">Voltar pra home</button>
     `
-    elementoResultado = document.querySelector(".container-resultado")
+    elementoResultado = document.querySelector(".container-resultado") 
 }
 let contadorDeJogadas=0;
 let contadorDeAcertos=0;
@@ -611,11 +613,10 @@ function finalizarQuizz() {
         });
     });
     objNovoQuizz.levels = niveis;
-    
     const request = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/buzzquizz/quizzes", objNovoQuizz);
     request.catch(QuizzErro)
     request.then(QuizzEnviado)
-    
+    addLoadingScreen()
 }
 let listaDeQuizzesDoUsuario =[];
 let idQuizzEnviado;
@@ -627,6 +628,7 @@ function QuizzEnviado(resposta) {
     listaDeQuizzesDoUsuario.push(resposta.data);
     listaDosSeusQuizzesSerializada = JSON.stringify(listaDeQuizzesDoUsuario);
     localStorage.setItem("SeusQuizzes", listaDosSeusQuizzesSerializada);
+    removeLoadingScreen()
     renderizarQuizzNaTela3_4();
 }
 function renderizarQuizzNaTela3_4() {
@@ -727,4 +729,12 @@ function validarUrl(url) {
 }
 function validarCorHex(corHexadecimal) {
     return corHexadecimal.match(/^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$/i) !== null;
+}
+function addLoadingScreen() {
+    document.querySelector('.pagina-inicial').classList.add('oculto');
+    document.querySelector('.loader').classList.remove('oculto');
+}
+function removeLoadingScreen() {
+    document.querySelector('.pagina-inicial').classList.remove('oculto');
+    document.querySelector('.loader').classList.add('oculto');
 }
