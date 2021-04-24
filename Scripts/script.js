@@ -193,7 +193,6 @@ function resultadoCalculado() {
     let descriçãoDoNivel;
     for(let j=0; j < dadosDoResultado.acertoMinimoResultado.length; j++){
         if (porcentagemAcerto >= dadosDoResultado.acertoMinimoResultado[j]){
-            const indiceResultado = j;
             descriçãoDoNivel = dadosDoResultado.titulosResultado[j]
             textoDoNivel = dadosDoResultado.textosResultado[j]
             imagemDoNivel = dadosDoResultado.imagensResultado[j]
@@ -336,8 +335,7 @@ function criarPerguntas() {
                     <h2>Pergunta ${i}</h2>
                     <img onclick="alternarPergunta(this.parentNode)" src="img/create.svg" alt="expandir pergunta">
                 </div>
-            </article>
-        `;
+            </article>`;
     }
     paginaPerguntas.innerHTML += `<button  onclick="validarDadosFormulario_3_2()">Prosseguir pra criar níveis</button>`
     if(elementoPerguntaAnterior===undefined) {
@@ -374,7 +372,6 @@ function minimizarPergunta(elementoPergunta, identificadorDaPergunta) {
                 <img onclick="alternarPergunta(this.parentNode)" src="img/create.svg" alt="expandir pergunta">
             </div>`;
 }
-
 let formulario_3_2 = []
 formulario_3_2[0] = ["","","","","","","","","","",];
 function renderizarInputsDaTela_3_2(id) {
@@ -428,8 +425,7 @@ function validarDadosFormulario_3_2() {
         let criterioUrl = validarTextoRespostas(armazenarDados_3_2[i].URLdaImagemCerta)
         if (criterioTexto === false || criterioUrl === false){
             armazenarDados_3_2 = []
-            return alert('Preencha a pagina toda, novamente!')
-            ;
+            return alert('Preencha a pagina toda, novamente!');
         }
     }
     for (let i=0; i < armazenarDados_3_1.numerQuestions; i++){
@@ -452,8 +448,7 @@ function validarDadosFormulario_3_2() {
             criterioUrl = validarTextoRespostas(armazenarDados_3_2[i].URLdaImagemErrada2)
             if (criterioTexto === false || criterioUrl === false){
                 armazenarDados_3_2 = []
-                return alert('Preencha a pagina toda, novamente!')
-                ;
+                return alert('Preencha a pagina toda, novamente!');
             }
         }
     }
