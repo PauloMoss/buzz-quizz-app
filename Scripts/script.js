@@ -626,17 +626,21 @@ function QuizzEnviado(resposta) {
     renderizarQuizzNaTela3_4();
 }
 function renderizarQuizzNaTela3_4() {
-    document.querySelector('.container-comeco.fim').innerHTML = `
-        <h1>Seu quizz está pronto!</h1>
-        <div class="quizz fim" onclick="escolherQuizz(this)" id='${idQuizzEnviado}'> 
-            <img src=${armazenarDados_3_1.image}>
-            <div class="nomeDoQuiz fim">
-                ${armazenarDados_3_1.title}
+    paginaCriarQuizz.innerHTML = `
+    <div class="tela-3-4">
+        <div class="container-comeco fim">
+            <h1>Seu quizz está pronto!</h1>
+            <div class="quizz fim" onclick="escolherQuizz(this)" id='${idQuizzEnviado}'> 
+                <img src=${armazenarDados_3_1.image}>
+                <div class="nomeDoQuiz fim">
+                    ${armazenarDados_3_1.title}
+                </div>
             </div>
+            <button class="reinicia-quizz fim" onclick="escolherQuizz(this)" id='${idQuizzEnviado}'>Acessar Quizz</button>
+            <button onclick="irParaPaginaInicial()" class="retorna-inicio fim">Voltar pra home</button>
         </div>
-        <button class="reinicia-quizz fim" onclick="escolherQuizz(this)" id='${idQuizzEnviado}'>Acessar Quizz</button>
-        <button onclick="irParaPaginaInicial()" class="retorna-inicio fim">Voltar pra home</button>
-    `;
+    </div>
+        `;
 }
 function QuizzErro (erro) {
     const error = erro.response.data;
